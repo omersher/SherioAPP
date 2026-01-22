@@ -1,0 +1,81 @@
+﻿<Window x:Class="SherioAPP.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        Width="800"
+        Height="500">
+
+    <Window.Resources>
+        <Style TargetType="ScrollBar">
+            <Setter Property="Visibility" Value="Collapsed"/>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="White">
+
+        <Grid>
+
+            <!-- כפתור יציאה -->
+            <Button Width="32"
+        Height="32"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        Margin="10"
+        Panel.ZIndex="999"
+        Cursor="Hand"
+        Click="Exit_Click"
+        Background="Transparent"
+        BorderThickness="0"
+        ToolTip="יציאה מהאפליקציה">
+
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Root"
+                    Width="32"
+                    Height="32"
+                    Background="Transparent"
+                    CornerRadius="16">
+                            <materialDesign:PackIcon
+                    x:Name="Icon"
+                    Kind="Close"
+                    Width="18"
+                    Height="18"
+                    Foreground="#6B7280"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <!-- Hover -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root"
+                            Property="Background"
+                            Value="#FEE2E2"/>
+                                <Setter TargetName="Icon"
+                            Property="Foreground"
+                            Value="#DC2626"/>
+                            </Trigger>
+
+                            <!-- Click -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Root"
+                            Property="Background"
+                            Value="#FECACA"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <!-- כאן נטענים העמודים -->
+            <Frame x:Name="MainFrame"
+                   NavigationUIVisibility="Hidden"/>
+
+        </Grid>
+
+    </Border>
+</Window>

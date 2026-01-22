@@ -1,0 +1,48 @@
+﻿<Page x:Class="SherioAPP.pages.Register" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+      FlowDirection="RightToLeft" 
+      FontFamily="Segoe UI" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d"
+      d:DesignHeight="500" d:DesignWidth="800" 
+      Title="Register">
+    <Grid Width="800" Height="500" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Border Background="White"  BorderBrush="#E5E7EB">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Border Background="#66000000"/>
+                    <Grid.Background>
+                        <ImageBrush ImageSource="/images/RegisterImg.jpg"
+                                    Stretch="UniformToFill"/>
+                    </Grid.Background>
+                </Grid>
+
+                <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Hidden">
+                    <StackPanel Margin="35" VerticalAlignment="Center">
+                        <TextBlock Text="יצירת חשבון" FontSize="22" FontWeight="SemiBold" Foreground="#111827" Margin="0 0 0 4"/>
+                        <TextBlock Text="הצטרפו למשפחת SHERIO" FontSize="13" Foreground="#6B7280" Margin="0 0 0 15"/>
+                        <TextBlock Text="שם מלא" FontSize="11" Foreground="#374151" Margin="0 0 0 4"/>
+                        <TextBox x:Name="FullNameBox" Height="34" Padding="8,5" Margin="0 0 0 10"/>
+                        <TextBlock Text="תעודת זהות" FontSize="11" Foreground="#374151" Margin="0 0 0 4"/>
+                        <TextBox x:Name="GuestIdBox" Height="34" Padding="8,5" Margin="0 0 0 10"/>
+                        <TextBlock Text="אימייל" FontSize="11" Foreground="#374151" Margin="0 0 0 4"/>
+                        <TextBox x:Name="EmailBox" Height="34" Padding="8,5" Margin="0 0 0 10"/>
+                        <TextBlock Text="סיסמה" FontSize="11" Foreground="#374151" Margin="0 0 0 4"/>
+                        <PasswordBox x:Name="PasswordBoxInput" Height="34" Padding="8,5" Margin="0 0 0 15"/>
+                        <Button Content="הרשמה" Height="38" Background="#111827" Foreground="White" BorderThickness="0" Click="CreateAccount_Click"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
+                            <TextBlock Text="כבר יש לך חשבון?" FontSize="12" Foreground="#6B7280" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <Button Content="התחברות" FontSize="12" Foreground="#2563EB" Background="Transparent" BorderThickness="0" Click="Login_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>
