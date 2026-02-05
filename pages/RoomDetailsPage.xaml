@@ -1,0 +1,131 @@
+﻿<Page x:Class="SherioAPP.pages.RoomDetailsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      FlowDirection="RightToLeft"
+      Title="RoomDetailsPage"
+      Background="#F8FAFC"
+      Height="500"
+      Width="800">
+
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Page.Resources>
+
+    <materialDesign:DialogHost x:Name="RoomGalleryDialog" Identifier="RoomGalleryHost">
+        <materialDesign:DialogHost.DialogContent>
+            <Border Padding="24" Background="White" CornerRadius="16" Width="650" MaxHeight="450">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="גלריית תמונות" FontSize="22" FontWeight="ExtraBold" Margin="0,0,0,15" Foreground="#1E293B"/>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+                        <ItemsControl x:Name="GalleryItemsControl">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel HorizontalAlignment="Center"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Width="180" Height="125" Margin="8" CornerRadius="12" ClipToBounds="True" Background="#F1F5F9">
+                                        <Image Source="{Binding ImageLink}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <Button Grid.Row="2" Content="סגור" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                            Style="{StaticResource MaterialDesignFlatButton}" Foreground="#2563EB" FontWeight="Bold" Margin="0,20,0,0"/>
+                </Grid>
+            </Border>
+        </materialDesign:DialogHost.DialogContent>
+
+        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+            <StackPanel Margin="0,0,0,20">
+
+                <Grid Height="260" Margin="15,15,15,10">
+                    <Border CornerRadius="20" ClipToBounds="True">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image x:Name="MainRoomImage" Grid.Column="0" Stretch="UniformToFill" Margin="0,0,4,0"/>
+
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Image x:Name="SideRoomImage1" Grid.Row="0" Stretch="UniformToFill" Margin="0,0,0,2"/>
+                                <Image x:Name="SideRoomImage2" Grid.Row="1" Stretch="UniformToFill" Margin="0,2,0,0"/>
+                            </Grid>
+
+                            <Button VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15" 
+                                    Background="#CCFFFFFF" BorderThickness="0" Height="Auto" Padding="12,6"
+                                    Click="OpenGallery_Click" materialDesign:ButtonAssist.CornerRadius="10">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="ImageMultiple" Foreground="#1E293B" Width="18" Height="18"/>
+                                    <TextBlock x:Name="GalleryCountText" Text="תמונות" Margin="8,0,0,0" Foreground="#1E293B" FontWeight="Bold" FontSize="13"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <StackPanel Margin="25,5,25,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{Binding RoomName}" FontSize="30" FontWeight="ExtraBold" Foreground="#1E293B" VerticalAlignment="Bottom"/>
+
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding AdultRate, StringFormat='₪{0:N0}'}" 
+                                       FontSize="32" FontWeight="ExtraBold" Foreground="#2563EB"/>
+                            <TextBlock Text="מחיר ללילה" FontSize="12" Foreground="#94A3B8" HorizontalAlignment="Left" Margin="2,-5,0,0"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <WrapPanel Margin="0,15,0,10">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,20,10">
+                            <materialDesign:PackIcon Kind="Bed" Foreground="#2563EB" Width="20" Height="20" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Bedrooms, StringFormat='\{0\} חדרים'}" FontSize="15" Foreground="#64748B" FontWeight="SemiBold" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,20,10" Visibility="{Binding HasBalcony, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <materialDesign:PackIcon Kind="Balcony" Foreground="#10B981" Width="20" Height="20" VerticalAlignment="Center"/>
+                            <TextBlock Text="מרפסת" FontSize="15" Foreground="#10B981" FontWeight="SemiBold" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,20,10" Visibility="{Binding HasKitchen, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <materialDesign:PackIcon Kind="Kitchen" Foreground="#F59E0B" Width="20" Height="20" VerticalAlignment="Center"/>
+                            <TextBlock Text="מטבחון" FontSize="15" Foreground="#F59E0B" FontWeight="SemiBold" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </WrapPanel>
+
+                    <Separator Background="#F1F5F9" Margin="0,5,0,15"/>
+
+                    <Button Content="הזמן חדר זה עכשיו" 
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Background="#2563EB" Foreground="White"
+                            BorderThickness="0"
+                            Height="50" Width="200" HorizontalAlignment="Right"
+                            materialDesign:ButtonAssist.CornerRadius="12"
+                            FontSize="16" FontWeight="Bold"
+                            Click="BookRoom_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </materialDesign:DialogHost>
+</Page>

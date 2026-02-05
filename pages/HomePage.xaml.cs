@@ -1,5 +1,6 @@
 ﻿using ApiInterface;
 using Model;
+using SherioAPP.pages.OwnerPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,9 +58,13 @@ namespace SherioAPP.pages
                 return;
             }
 
+            App.CheckInDate = CheckInPicker.SelectedDate.Value.Date;
+            App.CheckOutDate = CheckOutPicker.SelectedDate.Value.Date;
+
             DatesText.Text =
-                $"{CheckInPicker.SelectedDate:dd/MM} - {CheckOutPicker.SelectedDate:dd/MM}";
+                $"{App.CheckInDate:dd/MM} - {App.CheckOutDate:dd/MM}";
             DatesText.Foreground = Brushes.Black;
+
             DatesPopup.IsOpen = false;
         }
 
@@ -130,6 +135,10 @@ namespace SherioAPP.pages
             AdultsCountText.Text = adults.ToString();
             ChildrenCountText.Text = children.ToString();
             GuestsLabelText.Text = $"{adults} מבוגרים, {children} ילדים";
+
+            App.Adults = adults;
+            App.Children = children;
+
         }
 
         private void Guests_Click(object sender, RoutedEventArgs e)
@@ -138,20 +147,37 @@ namespace SherioAPP.pages
         }
 
         // ================= התחברות =================
+        private void Owner_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new OwnerSelectHotelPage());
+        }
 
         private void CheckLoginStatus()
         {
-            if (App.CurrentUser != null)
+            LoginBtn.Visibility = Visibility.Visible;
+            ProfileBtn.Visibility = Visibility.Collapsed;
+            OwnerBtn.Visibility = Visibility.Collapsed;
+
+            if (App.CurrentUser == null)
+                return;
+
+            LoginBtn.Visibility = Visibility.Collapsed;
+
+            if (App.IsAdmin)
             {
-                LoginBtn.Visibility = Visibility.Collapsed;
                 ProfileBtn.Visibility = Visibility.Visible;
-                UserNameText.Text = App.CurrentUser.FullName;
+                UserNameText.Text = "מנהל מערכת";
+                return;
             }
-            else
+
+            if (App.CurrentUser.IsOwner)
             {
-                LoginBtn.Visibility = Visibility.Visible;
-                ProfileBtn.Visibility = Visibility.Collapsed;
+                OwnerBtn.Visibility = Visibility.Visible;
+                return;
             }
+
+            ProfileBtn.Visibility = Visibility.Visible;
+            UserNameText.Text = App.CurrentUser.FullName;
         }
 
         private void Login_Click(object sender, RoutedEventArgs e)
@@ -161,10 +187,15 @@ namespace SherioAPP.pages
 
         private void Profile_Click(object sender, RoutedEventArgs e)
         {
+            if (App.IsAdmin)
+            {
+                NavigationService.Navigate(new AdminPage());
+                return;
+            }
+
             NavigationService.Navigate(new MyProfile());
         }
 
-        // ================= חיפוש =================
 
         private async void Search_Click(object sender, RoutedEventArgs e)
         {
@@ -189,14 +220,14 @@ namespace SherioAPP.pages
 
             var selectedCityIds = CitiesList.SelectedItems
                 .Cast<City>()
-                .Select(c => c.CityName)
+                .Select(c => c.Id)
                 .ToList();
 
             var hotels = await _apiService.GetAllHotelsAsync();
 
             var filteredHotels = hotels
                 .Where(h => h.City != null &&
-                            selectedCityIds.Contains(h.City.CityName))
+                            selectedCityIds.Contains(h.City.Id))
                 .ToList();
 
             if (filteredHotels.Count == 0)
@@ -205,7 +236,13 @@ namespace SherioAPP.pages
                 return;
             }
 
-            NavigationService.Navigate(new ShowResults(filteredHotels));
+            NavigationService.Navigate(
+                new ShowResults(
+                    filteredHotels,
+                    CheckInPicker.SelectedDate.Value,
+                    CheckOutPicker.SelectedDate.Value
+                )
+            );
         }
 
         private void Dates_Click(object sender, RoutedEventArgs e)

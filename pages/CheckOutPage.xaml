@@ -1,0 +1,89 @@
+﻿<Page x:Class="SherioAPP.pages.CheckOutPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" 
+      d:DesignHeight="500" d:DesignWidth="800"
+      FlowDirection="RightToLeft"
+      Background="#F8FAFC"
+      Title="CheckOutPage">
+
+    <Grid>
+        <Border Background="White" 
+                Width="450" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Padding="30" 
+                CornerRadius="24" 
+                Effect="{DynamicResource MaterialDesignShadowDepth2}">
+
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,30" HorizontalAlignment="Center">
+                    <materialDesign:PackIcon Kind="ReceiptTextCheckOutline" Foreground="#1E293B" Width="32" Height="32" VerticalAlignment="Center"/>
+                    <TextBlock Text="סיכום הזמנה" FontSize="30" FontWeight="ExtraBold" Foreground="#1E293B" Margin="15,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <Border Background="#F1F5F9" CornerRadius="16" Padding="20" Margin="0,0,0,25">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="CalendarMonth" Foreground="#64748B" Width="20" Height="20" VerticalAlignment="Center"/>
+                                <TextBlock Text="מספר לילות" Foreground="#64748B" FontSize="16" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock x:Name="NightsText" Grid.Column="1" FontWeight="ExtraBold" FontSize="18" Foreground="#1E293B" Text="0"/>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Cash" Foreground="#64748B" Width="20" Height="20" VerticalAlignment="Center"/>
+                                <TextBlock Text="מחיר ללילה" Foreground="#64748B" FontSize="16" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock x:Name="PricePerNightText" Grid.Column="1" FontWeight="ExtraBold" FontSize="18" Foreground="#1E293B" Text="₪0"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Separator Background="#E2E8F0" Margin="0,5,0,25"/>
+
+                <Grid Margin="0,0,0,35">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="סה''כ לתשלום:" FontSize="18" FontWeight="Bold" Foreground="#1E293B"/>
+                        <TextBlock Text="כולל מע''מ ושירות" FontSize="12" Foreground="#94A3B8" Margin="0,2,0,0"/>
+                    </StackPanel>
+
+                    <TextBlock x:Name="TotalPriceText" Grid.Column="1"
+                               FontSize="42" FontWeight="ExtraBold" Foreground="#2563EB" 
+                               Text="₪0" VerticalAlignment="Center"/>
+                </Grid>
+
+                <Button Content="מעבר לתשלום מאובטח"
+                        Height="60"
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Background="#2563EB"
+                        Foreground="White"
+                        BorderThickness="0"
+                        materialDesign:ButtonAssist.CornerRadius="16"
+                        Cursor="Hand">
+                </Button>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>

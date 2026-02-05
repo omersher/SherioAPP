@@ -33,7 +33,7 @@
             </Grid>
         </materialDesign:Card>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
             <StackPanel Margin="40" MaxWidth="850">
 
                 <TextBlock Text="הגדרות חשבון" FontSize="28" FontWeight="Bold" Foreground="#1F2937" Margin="0,0,0,25"/>
@@ -103,14 +103,6 @@
                             </StackPanel>
                         </materialDesign:Card>
 
-                        <materialDesign:Card Background="#DBEAFE" Padding="15" UniformCornerRadius="12">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="ShieldCheck" Foreground="#1E40AF" Width="24" Height="24"/>
-                                <TextBlock Text="המידע שלך מוצפן ושמור בשרתי SHERIO" 
-                                           Margin="10,0,0,0" VerticalAlignment="Center" 
-                                           Foreground="#1E40AF" FontSize="12" TextWrapping="Wrap" MaxWidth="180"/>
-                            </StackPanel>
-                        </materialDesign:Card>
                     </StackPanel>
                 </Grid>
 

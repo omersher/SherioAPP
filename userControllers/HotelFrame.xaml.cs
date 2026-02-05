@@ -13,6 +13,7 @@ namespace SherioAPP.userControllers
             InitializeComponent();
         }
 
+
         private void CheckAvailability_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.DataContext is Hotel hotel)
