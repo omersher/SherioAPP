@@ -5,6 +5,7 @@
       Width="800" Height="500"
       FlowDirection="RightToLeft"
       Background="#F1F5F9">
+
     <Grid Margin="25">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -13,120 +14,70 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="0,0,0,20">
-            <TextBlock Text="ניהול מלאי חדרים" 
-                       FontSize="30" 
-                       FontWeight="ExtraBold" 
+            <TextBlock Text="ניהול מלאי חדרים"
+                       FontSize="30"
+                       FontWeight="ExtraBold"
                        Foreground="#1E293B"/>
-            <TextBlock Text="כאן ניתן לערוך מחירים ושירותים לכל סוג חדר" 
-                       FontSize="14" 
-                       Foreground="#64748B" 
+            <TextBlock Text="כאן ניתן לערוך מחירים ושירותים לכל סוג חדר"
+                       FontSize="14"
+                       Foreground="#64748B"
                        Margin="2,5,0,0"/>
         </StackPanel>
 
-        <materialDesign:Card Grid.Row="1" 
-                             UniformCornerRadius="15" 
+        <materialDesign:Card Grid.Row="1"
+                             UniformCornerRadius="15"
                              materialDesign:ElevationAssist.Elevation="Dp2"
                              Background="White">
 
             <DataGrid x:Name="RoomsGrid"
                       AutoGenerateColumns="False"
-                      CanUserSortColumns="True"
-                      HeadersVisibility="Column"
-                      GridLinesVisibility="Horizontal"
-                      HorizontalGridLinesBrush="#F1F5F9"
-                      BorderThickness="0"
-                      Background="Transparent"
+                      CanUserAddRows="False"
+                      SelectionMode="Single"
                       RowHeight="55"
                       FontSize="14"
-                      SelectionMode="Single"
-                      materialDesign:DataGridAssist.CellPadding="12,8,12,8"
-                      materialDesign:DataGridAssist.ColumnHeaderPadding="12">
-
-                <DataGrid.Resources>
-                    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
-                        <Setter Property="Background" Value="#F8FAFC"/>
-                        <Setter Property="Foreground" Value="#475569"/>
-                        
-                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                            <Setter Property="BorderBrush" Value="#E2E8F0"/>
-                            <Setter Property="Padding" Value="15,10"/>
-                    </Style>
-                </DataGrid.Resources>
+                      Background="Transparent"
+                      BorderThickness="0">
 
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="שם החדר" Width="1.5*">
+                    <DataGridTextColumn Header="שם החדר"
+                                        Binding="{Binding RoomName, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="*"/>
 
-                        <!-- מצב תצוגה רגיל -->
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <materialDesign:PackIcon Kind="BedDoubleOutline"
-                                         Foreground="#2563EB"
-                                         Margin="0,0,10,0"
-                                         VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding RoomName}"
-                           FontWeight="Bold"
-                           Foreground="#1E293B"
-                           VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTextColumn Header="מחיר מבוגר"
+                                        Binding="{Binding AdultRate, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="*"/>
 
-                        <!-- מצב עריכה -->
-                        <DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate>
-                                <TextBox Text="{Binding RoomName, UpdateSourceTrigger=PropertyChanged}"
-                     FontSize="14"
-                     FontWeight="Bold"
-                     Foreground="#1E293B"
-                     Background="Transparent"
-                     BorderThickness="0"
-                     materialDesign:HintAssist.Hint="שם החדר"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTextColumn Header="מחיר ילד"
+                                        Binding="{Binding ChildRate, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="*"/>
 
-                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="שינה"
+                                        Binding="{Binding Bedrooms, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="80"/>
 
-                    <DataGridTextColumn Header="מחיר מבוגר" Binding="{Binding AdultRate}" Width="*" />
-                    <DataGridTextColumn Header="מחיר ילד" Binding="{Binding ChildRate}" Width="*" />
+                    <DataGridTextColumn Header="אמבט"
+                                        Binding="{Binding Bathrooms, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="80"/>
 
-                    <DataGridTextColumn Header="שינה" Binding="{Binding Bedrooms}" Width="70" />
-                    <DataGridTextColumn Header="אמבט" Binding="{Binding Bathrooms}" Width="70" />
+                    <DataGridCheckBoxColumn Header="מטבח"
+                                            Binding="{Binding HasKitchen, UpdateSourceTrigger=PropertyChanged}"
+                                            Width="80"/>
 
-                    <DataGridCheckBoxColumn Header="מטבח" Binding="{Binding HasKitchen}" Width="75"
-                                            ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
-                                            EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
-
-                    <DataGridCheckBoxColumn Header="חניה" Binding="{Binding HasParking}" Width="75"
-                                            ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
-                                            EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
-
-                    <DataGridCheckBoxColumn Header="מרפסת" Binding="{Binding HasBalcony}" Width="75"
-                                            ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
-                                            EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
+                    <DataGridCheckBoxColumn Header="חניה"
+                                            Binding="{Binding HasParking, UpdateSourceTrigger=PropertyChanged}"
+                                            Width="80"/>
                 </DataGrid.Columns>
             </DataGrid>
         </materialDesign:Card>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,20,0,0">
-            <Button Content="שמור שינויים במערכת"
-                    Width="200" Height="48"
-                    Background="#2563EB" 
-                    Foreground="White"
-                    FontSize="16" 
-                    FontWeight="Bold"
-                    materialDesign:ButtonAssist.CornerRadius="12"
-                    Click="Save_Click">
-                <Button.Effect>
-                    <DropShadowEffect BlurRadius="10" Opacity="0.1" ShadowDepth="2"/>
-                </Button.Effect>
-            </Button>
-
-            <Button Content="ביטול" 
-                    Style="{StaticResource MaterialDesignFlatButton}"
-                    Foreground="#64748B"
-                    Margin="15,0,0,0"
-                    Width="100"/>
-        </StackPanel>
+        <Button Grid.Row="2"
+                Content="שמור שינויים"
+                Width="200"
+                Height="45"
+                Margin="0,20,0,0"
+                Background="#2563EB"
+                Foreground="White"
+                FontSize="16"
+                Click="Save_Click"/>
     </Grid>
 </Page>

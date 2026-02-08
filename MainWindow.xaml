@@ -75,6 +75,69 @@
             <Frame x:Name="MainFrame"
                    NavigationUIVisibility="Hidden"/>
 
+            <!-- כפתור חזרה -->
+            <Button Width="32"
+        Height="32"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        Margin="52,10,0,0"
+        Panel.ZIndex="999"
+        Cursor="Hand"
+                    IsEnabled="{Binding ElementName=MainFrame, Path=CanGoBack}"
+        Click="Back_Click"
+        Background="Transparent"
+        BorderThickness="0"
+        ToolTip="חזרה למסך הקודם">
+
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Root"
+                    Width="32"
+                    Height="32"
+                    Background="Transparent"
+                    CornerRadius="16">
+
+                            <materialDesign:PackIcon
+                    x:Name="Icon"
+                    Kind="ArrowRight"
+                    Width="18"
+                    Height="18"
+                    Foreground="#6B7280"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+
+                            <!-- Hover -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root"
+                            Property="Background"
+                            Value="#E0E7FF"/>
+                                <Setter TargetName="Icon"
+                            Property="Foreground"
+                            Value="#2563EB"/>
+                            </Trigger>
+
+                            <!-- Click -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Root"
+                            Property="Background"
+                            Value="#C7D2FE"/>
+                            </Trigger>
+
+                            <!-- Disable -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Icon"
+                            Property="Foreground"
+                            Value="#D1D5DB"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
         </Grid>
 
     </Border>

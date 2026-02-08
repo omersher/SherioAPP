@@ -1,17 +1,60 @@
 ﻿<Page x:Class="SherioAPP.pages.OwnerPages.BookingsManagementPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Height="500" Width="800" FlowDirection="RightToLeft" Background="#F8FAFC">
+      Height="500" Width="800"
+      FlowDirection="RightToLeft"
+      Background="#F8FAFC">
+
     <Grid Margin="20">
-        <TextBlock Text="יומן הזמנות" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
-        <DataGrid Margin="0,50,0,0" Background="White" AutoGenerateColumns="False" CanUserAddRows="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="יומן הזמנות"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   Margin="0,0,0,15"/>
+
+        <DataGrid x:Name="BookingsGrid"
+                  Grid.Row="1"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  IsReadOnly="False"
+                  SelectionMode="Single">
+
             <DataGrid.Columns>
-                <DataGridTextColumn Header="שם לקוח" Binding="{Binding Customer}" Width="*"/>
-                <DataGridTextColumn Header="חדר" Binding="{Binding RoomNum}" Width="80"/>
-                <DataGridTextColumn Header="כניסה" Binding="{Binding CheckIn}" Width="120"/>
-                <DataGridTextColumn Header="יציאה" Binding="{Binding CheckOut}" Width="120"/>
-                <DataGridTextColumn Header="סטטוס" Binding="{Binding Status}" Width="100"/>
+                <DataGridTextColumn Header="חדר" 
+                                    Binding="{Binding RoomID}" 
+                                    IsReadOnly="True"/>
+
+                <DataGridTextColumn Header="כניסה" 
+                                    Binding="{Binding StartDate, StringFormat=\{0:dd/MM/yyyy\}}" 
+                                    IsReadOnly="True"/>
+
+                <DataGridTextColumn Header="יציאה" 
+                                    Binding="{Binding EndDate, StringFormat=\{0:dd/MM/yyyy\}}" 
+                                    IsReadOnly="True"/>
+
+                <DataGridTextColumn Header="מבוגרים" 
+                                    Binding="{Binding AdultCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <DataGridTextColumn Header="ילדים" 
+                                    Binding="{Binding ChildCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <DataGridTextColumn Header="סטטוס" 
+                                    Binding="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <Button Grid.Row="2"
+                Content="שמור שינויים"
+                Width="150" Height="40"
+                Margin="0,10,0,0"
+                HorizontalAlignment="Left"
+                Background="#2563EB"
+                Foreground="White"
+                Click="SaveChanges_Click"/>
     </Grid>
 </Page>

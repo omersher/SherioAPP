@@ -1,5 +1,6 @@
 ﻿using ApiInterface;
 using Model;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,52 +26,62 @@ namespace SherioAPP.pages.OwnerPages
                 return;
             }
 
-            // טעינת חדרים אמיתית מה־DB לפי HotelID
-            var roomsFromDb = await _api.GetRoomsByHotelIdAsync(App.CurrentHotel.Id);
+            try
+            {
+                // ✅ שליפה רק של חדרים למלון הנבחר
+                var rooms =
+                    await _api.GetRoomsByHotelIdAsync(App.CurrentHotel.Id);
 
-            _rooms = new ObservableCollection<Room>(roomsFromDb);
-            RoomsGrid.ItemsSource = _rooms;
+                _rooms = new ObservableCollection<Room>(rooms);
+                RoomsGrid.ItemsSource = _rooms;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("שגיאה בטעינת החדרים:\n" + ex.Message);
+            }
         }
 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                RoomsGrid.CommitEdit(DataGridEditingUnit.Row, true);
+                RoomsGrid.CommitEdit();
+
                 foreach (var room in _rooms)
                 {
-                    // חיבור למלון
-                    if (room.Hotel == null)
-                        room.Hotel = App.CurrentHotel;
+                    if (room == null)
+                        continue;
 
-                    // ולידציה בסיסית
-                    if (string.IsNullOrWhiteSpace(room.RoomName))
+                    if (room.AdultRate < 0)
                     {
-                        MessageBox.Show("יש חדר ללא שם");
+                        MessageBox.Show($"מחיר לא תקין בחדר {room.RoomName}");
                         return;
                     }
 
-                    if (room.AdultRate <= 0)
+                    // ✅ DTO בלבד – בלי אובייקט Hotel
+                    var dto = new RoomUpdateDto
                     {
-                        MessageBox.Show($"מחיר מבוגר לא תקין בחדר {room.RoomName}");
-                        return;
-                    }
+                        Id = room.Id,
+                        RoomName = room.RoomName,
+                        AdultRate = room.AdultRate,
+                        ChildRate = room.ChildRate,
+                        Bedrooms = room.Bedrooms,
+                        Bathrooms = room.Bathrooms,
+                        HasKitchen = room.HasKitchen,
+                        HasParking = room.HasParking,
+                        HasBalcony = room.HasBalcony,
+                        HasLivingRoom = room.HasLivingRoom,
+                        TotalUnits = room.TotalUnits,
+                        HotelId = App.CurrentHotel.Id
+                    };
 
-                    if (room.Bedrooms <= 0 || room.Bathrooms <= 0)
-                    {
-                        MessageBox.Show($"שינה / אמבט לא תקינים בחדר {room.RoomName}");
-                        return;
-                    }
-
-                    // שליחה לשרת
-                    if (room.Id == 0)
-                        await _api.InsertRoomAsync(room);
-                    else
-                        await _api.UpdateRoomAsync(room);
+                    await _api.UpdateRoomAsync(dto);
                 }
 
-                MessageBox.Show("החדרים נשמרו בהצלחה");
+                MessageBox.Show("החדרים עודכנו בהצלחה");
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("שגיאה בשמירה:\n" + ex.Message);
             }
