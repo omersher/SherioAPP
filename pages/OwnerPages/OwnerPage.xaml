@@ -1,0 +1,87 @@
+﻿<Page x:Class="SherioAPP.pages.OwnerPages.OwnerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Width="800" Height="500"
+      FlowDirection="RightToLeft"
+      Background="#F1F5F9">
+
+    <Page.Resources>
+        <Style x:Key="MenuCardStyle" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="15"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="15"
+                                BorderBrush="#E2E8F0"
+                                BorderThickness="1">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="15" Direction="270" ShadowDepth="2" Opacity="0.1"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F8FAFC"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Margin="10,0,0,30">
+            <TextBlock Text="לוח בקרה למנהל"
+                       FontSize="32"
+                       FontWeight="ExtraBold"
+                       Foreground="#1E293B"/>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="שם המלון: " Foreground="#64748B" FontSize="16"/>
+                <TextBlock Text="{Binding Name}"
+                           Foreground="#3B82F6" 
+                           FontSize="16" 
+                           FontWeight="SemiBold" 
+                           Margin="5,0,0,0"/>
+            </StackPanel>
+        </StackPanel>
+
+        <UniformGrid Grid.Row="1" Columns="3">
+
+            <Button Style="{StaticResource MenuCardStyle}" Click="Rooms_Click">
+                <StackPanel>
+                    <TextBlock Text="🏨" FontSize="45" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                    <TextBlock Text="ניהול חדרים" FontSize="18" FontWeight="Bold" Foreground="#334155" HorizontalAlignment="Center"/>
+                    <TextBlock Text="צפייה ועריכת מלאי" FontSize="12" Foreground="#94A3B8" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <Button Style="{StaticResource MenuCardStyle}" Click="Bookings_Click">
+                <StackPanel>
+                    <TextBlock Text="📑" FontSize="45" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                    <TextBlock Text="הזמנות" FontSize="18" FontWeight="Bold" Foreground="#334155" HorizontalAlignment="Center"/>
+                    <TextBlock Text="ניהול תורים ולקוחות" FontSize="12" Foreground="#94A3B8" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <Button Style="{StaticResource MenuCardStyle}" Click="HotelDetails_Click">
+                <StackPanel>
+                    <TextBlock Text="⚙️" FontSize="45" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                    <TextBlock Text="הגדרות עסק" FontSize="18" FontWeight="Bold" Foreground="#334155" HorizontalAlignment="Center"/>
+                    <TextBlock Text="פרטי קשר ומיקום" FontSize="12" Foreground="#94A3B8" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+        </UniformGrid>
+    </Grid>
+</Page>

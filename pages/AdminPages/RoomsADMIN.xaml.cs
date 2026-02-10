@@ -13,21 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SherioAPP.pages
+namespace SherioAPP.pages.AdminPages
 {
     /// <summary>
-    /// Interaction logic for AdminPage.xaml
+    /// Interaction logic for RoomsADMIN.xaml
     /// </summary>
-    public partial class AdminPage : Page
+    public partial class RoomsADMIN : Page
     {
-        public AdminPage()
+        public RoomsADMIN()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

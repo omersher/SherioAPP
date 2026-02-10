@@ -115,7 +115,7 @@
                Margin="10,0" 
                VerticalAlignment="Center"/>
 
-                        <Button Content="מילוי אוטומטי" 
+                        <Button Content="משתמש " 
             FontSize="12"
             Foreground="#2563EB"
             Background="Transparent"
@@ -139,6 +139,21 @@
             Cursor="Hand"
             FocusVisualStyle="{x:Null}"
             Click="Owner_Example"
+            VerticalAlignment="Center"/>
+                        <TextBlock Text="|" 
+               Foreground="#E5E7EB" 
+               Margin="10,0" 
+               VerticalAlignment="Center"/>
+
+                        <Button Content="אדמין" 
+            FontSize="12"
+            Foreground="#2563EB"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Cursor="Hand"
+            FocusVisualStyle="{x:Null}"
+            Click="Admin_Example"
             VerticalAlignment="Center"/>
 
                     </StackPanel>

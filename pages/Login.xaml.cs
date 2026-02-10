@@ -89,6 +89,12 @@ namespace SherioAPP.pages
             PasswordBoxInput.Password = "rotem2711";
         }
 
+        private void Admin_Example(object sender, RoutedEventArgs e)
+        {
+            EmailBox.Text = "admin@sherio.com";
+            PasswordBoxInput.Password = "admin123";
+        }
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

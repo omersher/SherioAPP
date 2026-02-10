@@ -1,0 +1,37 @@
+﻿<Page x:Class="SherioAPP.pages.AdminPages.PaymentsADMIN"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      FlowDirection="RightToLeft" Background="#F8FAFC" Height="500" Width="800">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="תיעוד תשלומים" FontSize="26" FontWeight="ExtraBold" Foreground="#1E293B" Margin="0,0,0,15"/>
+
+        <Border Grid.Row="1" Background="White" CornerRadius="12" Padding="12" Margin="0,0,0,15" BorderBrush="#E5E7EB" BorderThickness="1">
+            <DockPanel>
+                <materialDesign:PackIcon Kind="CashRegister" Width="22" Height="22" Foreground="#2563EB" Margin="0,0,10,0"/>
+                <TextBox x:Name="SearchBox" FontSize="14" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" Tag="חפש לפי מספר עסקה..."/>
+            </DockPanel>
+        </Border>
+
+        <DataGrid Grid.Row="2" x:Name="PaymentsGrid" AutoGenerateColumns="False" IsReadOnly="True" RowHeight="45" Background="White" BorderThickness="0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="מזהה עסקה" Binding="{Binding TransactionId}" Width="1*"/>
+                <DataGridTextColumn Header="סכום" Binding="{Binding Amount}" Width="1*"/>
+                <DataGridTextColumn Header="שיטה" Binding="{Binding PaymentMethod}" Width="1*"/>
+                <DataGridTemplateColumn Header="פעולות" Width="1.5*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="חשבונית" Background="#6366F1" Foreground="White" materialDesign:ButtonAssist.CornerRadius="6"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>

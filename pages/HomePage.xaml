@@ -8,7 +8,7 @@
       FlowDirection="RightToLeft"
       FontFamily="Segoe UI"
       Title="HomePage"
-      d:DesignHeight="800" d:DesignWidth="800">
+      d:DesignHeight="500" d:DesignWidth="800">
 
     <Page.Resources>
         <Style x:Key="InputButtonStyle" TargetType="Button">
@@ -142,77 +142,6 @@
                     </StackPanel>
                 </Grid>
 
-                <StackPanel Margin="40,30,40,50">
-                    <TextBlock Text="מבצעים חמים השבוע 🔥" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" Foreground="#1F2937"/>
-
-                    <UniformGrid Columns="3" Height="320">
-                        <Border Margin="10" CornerRadius="15" Background="White" BorderBrush="#E5E7EB" BorderThickness="1">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="15" ShadowDepth="2" Opacity="0.1"/>
-                            </Border.Effect>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="180"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Border Grid.Row="0" CornerRadius="15,15,0,0">
-                                    <Border.Background>
-                                        <ImageBrush ImageSource="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&amp;w=800" Stretch="UniformToFill"/>
-                                    </Border.Background>
-                                </Border>
-                                <StackPanel Grid.Row="1" Margin="15,10">
-                                    <TextBlock Text="מלון דן פנורמה" FontWeight="Bold" FontSize="16"/>
-                                    <TextBlock Text="אילת | על בסיס חצי פנסיון" FontSize="12" Foreground="Gray" Margin="0,2,0,5"/>
-                                    <TextBlock Text="₪890" FontSize="20" FontWeight="Bold" Foreground="#2563EB"/>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-
-                        <Border Margin="10" CornerRadius="15" Background="White" BorderBrush="#E5E7EB" BorderThickness="1">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="15" ShadowDepth="2" Opacity="0.1"/>
-                            </Border.Effect>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="180"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Border Grid.Row="0" CornerRadius="15,15,0,0">
-                                    <Border.Background>
-                                        <ImageBrush ImageSource="https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&amp;w=800" Stretch="UniformToFill"/>
-                                    </Border.Background>
-                                </Border>
-                                <StackPanel Grid.Row="1" Margin="15,10">
-                                    <TextBlock Text="לאונרדו פלאזה" FontWeight="Bold" FontSize="16"/>
-                                    <TextBlock Text="חיפה | נוף לים" FontSize="12" Foreground="Gray" Margin="0,2,0,5"/>
-                                    <TextBlock Text="₪750" FontSize="20" FontWeight="Bold" Foreground="#2563EB"/>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-
-                        <Border Margin="10" CornerRadius="15" Background="White" BorderBrush="#E5E7EB" BorderThickness="1">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="15" ShadowDepth="2" Opacity="0.1"/>
-                            </Border.Effect>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="180"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Border Grid.Row="0" CornerRadius="15,15,0,0">
-                                    <Border.Background>
-                                        <ImageBrush ImageSource="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&amp;w=800" Stretch="UniformToFill"/>
-                                    </Border.Background>
-                                </Border>
-                                <StackPanel Grid.Row="1" Margin="15,10">
-                                    <TextBlock Text="מלון בראשית" FontWeight="Bold" FontSize="16"/>
-                                    <TextBlock Text="מצפה רמון | חדר עם בריכה" FontSize="12" Foreground="Gray" Margin="0,2,0,5"/>
-                                    <TextBlock Text="₪1,450" FontSize="20" FontWeight="Bold" Foreground="#2563EB"/>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                    </UniformGrid>
-                </StackPanel>
             </StackPanel>
         </ScrollViewer>
 
