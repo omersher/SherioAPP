@@ -45,11 +45,10 @@ namespace SherioAPP.pages
         // התנתקות וחזרה לדף הבית
         private void Logout_Click(object sender, RoutedEventArgs e)
         {
-            if (this.NavigationService != null)
-            {
-                // כאן תחליף את HomePage בשם המחלקה של דף הכניסה/בית שלך
-                this.NavigationService.Navigate(new HomePage());
-            }
+            App.CurrentUser = null;
+            App.CurrentHotel = null;
+
+            NavigationService?.Navigate(new HomePage());
         }
     }
 }

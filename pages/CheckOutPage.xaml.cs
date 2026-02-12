@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation; // נדרש עבור NavigationService
 
 namespace SherioAPP.pages
 {
@@ -33,62 +34,52 @@ namespace SherioAPP.pages
 
         private async void CheckOutPage_Loaded(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(
-                $"DEBUG DATES\n" +
-                $"Check-In: {_checkIn:dd/MM/yyyy HH:mm}\n" +
-                $"Check-Out: {_checkOut:dd/MM/yyyy HH:mm}\n" +
-                $"Nights calc: {(_checkOut - _checkIn).Days}"
-            );
-
-            MessageBox.Show(
-    $"DEBUG PRICE\n" +
-    $"Adults: {_adults}\n" +
-    $"Children: {_children}\n" +
-    $"AdultRate: {_room.AdultRate}\n" +
-    $"ChildRate: {_room.ChildRate}"
-);
-
-
+            // חישוב לילות
             int nights = (_checkOut - _checkIn).Days;
+
             if (nights <= 0)
             {
-                MessageBox.Show("תאריכי ההזמנה אינם תקינים");
-                NavigationService.GoBack();
+                MessageBox.Show("תאריכי ההזמנה אינם תקינים. מינימום לילה אחד.");
+                if (NavigationService.CanGoBack) NavigationService.GoBack();
                 return;
             }
 
-            // 2️⃣ בדיקת זמינות אמיתית
+            // בדיקת זמינות
             bool available = await IsRoomAvailableAsync();
 
             if (!available)
             {
-                MessageBox.Show("התאריכים שנבחרו אינם זמינים");
-                NavigationService.GoBack();
+                MessageBox.Show("החדר אינו זמין בתאריכים שנבחרו.");
+                if (NavigationService.CanGoBack) NavigationService.GoBack();
                 return;
             }
 
-            // 3️⃣ חישוב מחיר
+            // חישוב והצגת מחיר
             CalculatePrice(nights);
         }
 
-        // ================== זמינות ==================
         private async Task<bool> IsRoomAvailableAsync()
         {
+            // כאן תוכל להוסיף קריאה אמיתית ל-API לבדיקת זמינות אם קיימת
             return true;
         }
 
-        // ================== מחיר ==================
         private void CalculatePrice(int nights)
         {
-            int pricePerNight =
-                (_adults * _room.AdultRate) +
-                (_children * _room.ChildRate);
-
+            // וודא שהשדות AdultRate ו-ChildRate קיימים במודל Room שלך
+            int pricePerNight = (_adults * _room.AdultRate) + (_children * _room.ChildRate);
             int totalPrice = pricePerNight * nights;
 
             NightsText.Text = nights.ToString();
             PricePerNightText.Text = $"₪{pricePerNight:N0}";
             TotalPriceText.Text = $"₪{totalPrice:N0}";
+        }
+
+        // הפונקציה שחסרה לך להפעלת הכפתור
+        private void PayBtn_Click(object sender, RoutedEventArgs e)
+        {
+            // ניווט לדף התשלום והעברת כל הנתונים
+            NavigationService.Navigate(new PaymentPage(_room, _checkIn, _checkOut, _adults, _children));
         }
     }
 }

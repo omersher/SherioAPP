@@ -71,18 +71,18 @@
                                Text="₪0" VerticalAlignment="Center"/>
                 </Grid>
 
-                <Button Content="מעבר לתשלום מאובטח"
-                        Height="60"
-                        FontSize="18"
-                        FontWeight="Bold"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
-                        Background="#2563EB"
-                        Foreground="White"
-                        BorderThickness="0"
-                        materialDesign:ButtonAssist.CornerRadius="16"
-                        Cursor="Hand">
+                <Button x:Name="PayBtn"
+        Content="מעבר לתשלום מאובטח"
+        Height="60"
+        FontSize="18"
+        FontWeight="Bold"
+        Style="{StaticResource MaterialDesignRaisedButton}"
+        Background="#2563EB"
+        Foreground="White"
+        materialDesign:ButtonAssist.CornerRadius="16"
+        Click="PayBtn_Click"
+        Cursor="Hand">
                 </Button>
-
             </StackPanel>
         </Border>
     </Grid>

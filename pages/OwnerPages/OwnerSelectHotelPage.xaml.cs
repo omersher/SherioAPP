@@ -55,5 +55,15 @@ namespace SherioAPP.pages.OwnerPages
         {
 
         }
+
+        private void Logout_Click(object sender, RoutedEventArgs e)
+        {
+            App.CurrentUser = null;
+            App.CurrentHotel = null;
+
+            NavigationService?.Navigate(new HomePage());
+        }
+
+
     }
 }

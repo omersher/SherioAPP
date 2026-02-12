@@ -12,7 +12,7 @@ namespace SherioAPP
     {
         public static Hotel? CurrentHotel { get; set; }
         public static bool IsAdmin { get; set; } = false;
-        public static User CurrentUser { get; set; }
+        public static User? CurrentUser { get; set; }
 
         // ===== Search data =====
         public static DateTime CheckInDate { get; set; }

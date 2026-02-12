@@ -7,17 +7,51 @@
       Background="#F8FAFC">
 
     <Grid Margin="30">
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Margin="0,0,0,25">
-            <TextBlock Text="ניהול המלונות שלי" FontSize="28" FontWeight="ExtraBold" Foreground="#1E293B"/>
-            <TextBlock Text="בחר מלון מהרשימה כדי לעבור למסך הניהול" FontSize="14" Foreground="#64748B" Margin="2,5,0,0"/>
-        </StackPanel>
+        <!-- ===== HEADER + LOGOUT ===== -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
+            <StackPanel Margin="0,0,0,25">
+                <TextBlock Text="ניהול המלונות שלי"
+                           FontSize="28"
+                           FontWeight="ExtraBold"
+                           Foreground="#1E293B"/>
+
+                <TextBlock Text="בחר מלון מהרשימה כדי לעבור למסך הניהול"
+                           FontSize="14"
+                           Foreground="#64748B"
+                           Margin="2,5,0,0"/>
+            </StackPanel>
+
+            <!-- Logout Button -->
+            <Button Grid.Column="1"
+                    Content="התנתקות"
+                    Width="110"
+                    Height="40"
+                    Background="#EF4444"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    BorderThickness="0"
+                    materialDesign:ButtonAssist.CornerRadius="10"
+                    Click="Logout_Click">
+                <Button.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
+                </Button.Effect>
+            </Button>
+
+        </Grid>
+
+        <!-- ===== HOTELS LIST ===== -->
         <ListBox x:Name="HotelsListBox"
                  Grid.Row="1"
                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -25,6 +59,7 @@
                  HorizontalContentAlignment="Stretch"
                  BorderThickness="0"
                  Background="Transparent">
+
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border Background="White"
@@ -40,15 +75,15 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0">
-                                <!-- כותרת -->
                                 <TextBlock Text="{Binding Name}"
                                            FontSize="18"
                                            FontWeight="Bold"
                                            Foreground="#1E293B"/>
 
-                                <!-- עיר -->
                                 <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                                    <materialDesign:PackIcon Kind="MapMarker" Foreground="#2563EB" Width="15"/>
+                                    <materialDesign:PackIcon Kind="MapMarker"
+                                                             Foreground="#2563EB"
+                                                             Width="15"/>
                                     <TextBlock Text="{Binding City.CityName}"
                                                FontSize="14"
                                                Foreground="#64748B"
@@ -66,9 +101,11 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
+        <!-- ===== SELECT BUTTON ===== -->
         <Button Grid.Row="2"
                 Content="המשך לניהול מלון נבחר"
-                Height="50" Width="220"
+                Height="50"
+                Width="220"
                 HorizontalAlignment="Left"
                 Margin="0,20,0,0"
                 BorderThickness="0"
@@ -78,9 +115,14 @@
                 FontWeight="Bold"
                 materialDesign:ButtonAssist.CornerRadius="12"
                 Click="SelectHotel_Click">
+
             <Button.Effect>
-                <DropShadowEffect BlurRadius="15" ShadowDepth="2" Opacity="0.2"/>
+                <DropShadowEffect BlurRadius="15"
+                                  ShadowDepth="2"
+                                  Opacity="0.2"/>
             </Button.Effect>
         </Button>
+
     </Grid>
 </Page>
+    

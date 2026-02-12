@@ -28,8 +28,8 @@ namespace SherioAPP.pages
             var bookings = await _api.GetAllBookingsAsync();
 
             int bookedCount = bookings.Count(b =>
-                b.Room != null &&
-                b.Room.Id == roomId &&
+                b.RoomID != 0 &&
+                b.RoomID == roomId &&
                 b.Status != "Cancelled" &&
                 !(b.EndDate <= checkIn || b.StartDate >= checkOut)
             );

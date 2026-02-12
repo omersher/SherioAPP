@@ -1,0 +1,47 @@
+﻿<Page x:Class="SherioAPP.pages.ThankYouPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      FlowDirection="RightToLeft"
+      Background="#F8FAFC"
+      Title="ThankYouPage"
+      Height="500" Width="800">
+
+    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Border Background="White" Width="500" Padding="40" CornerRadius="30"
+                Effect="{DynamicResource MaterialDesignShadowDepth3}">
+            <StackPanel HorizontalAlignment="Center">
+
+                <materialDesign:PackIcon Kind="CheckCircle" Foreground="#10B981" 
+                                         Width="80" Height="80" 
+                                         HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+                <TextBlock Text="ההזמנה בוצעה בהצלחה!" 
+                           FontSize="32" FontWeight="ExtraBold" 
+                           Foreground="#1E293B" HorizontalAlignment="Center"/>
+
+                <TextBlock Text="תודה שבחרת Sherio. אנחנו מחכים לראותך!" 
+                           FontSize="16" Foreground="#64748B" 
+                           Margin="0,10,0,30" HorizontalAlignment="Center"/>
+
+                <Border Background="#F1F5F9" CornerRadius="12" Padding="20" Margin="0,0,0,30">
+                    <StackPanel>
+                        <TextBlock Text="מספר הזמנה:" HorizontalAlignment="Center" 
+                                   FontSize="14" Foreground="#64748B"/>
+                        <TextBlock x:Name="OrderNumberText" Text="#0000" 
+                                   HorizontalAlignment="Center" FontSize="28" 
+                                   FontWeight="Bold" Foreground="#2563EB" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <Button Content="חזרה לדף הבית" 
+                        Width="200" Height="50"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        materialDesign:ButtonAssist.CornerRadius="12"
+                        Background="#1E293B" Foreground="White"
+                        Click="BackToHome_Click"/>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>

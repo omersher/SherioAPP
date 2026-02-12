@@ -1,0 +1,54 @@
+﻿<Page x:Class="SherioAPP.pages.PaymentPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      FlowDirection="RightToLeft"
+      Background="#F8FAFC"
+      Title="PaymentPage"
+      Height="500" Width="800">
+
+    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Border Background="White" Width="500" Padding="35" CornerRadius="24"
+                Effect="{DynamicResource MaterialDesignShadowDepth2}">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,30" HorizontalAlignment="Center">
+                    <materialDesign:PackIcon Kind="CreditCardCheckOutline" Foreground="#2563EB" Width="32" Height="32" VerticalAlignment="Center"/>
+                    <TextBlock Text="פרטי תשלום" FontSize="28" FontWeight="ExtraBold" Foreground="#1E293B" Margin="15,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <TextBox x:Name="CardNumber" materialDesign:HintAssist.Hint="מספר כרטיס אשראי" 
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}" Margin="0,0,0,20"
+                         MaxLength="16" FontSize="16"/>
+
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Name="ExpiryDate" Grid.Column="0" materialDesign:HintAssist.Hint="תוקף (MM/YY)" 
+                             Style="{StaticResource MaterialDesignOutlinedTextBox}" MaxLength="5"/>
+
+                    <PasswordBox x:Name="CVV" Grid.Column="2" materialDesign:HintAssist.Hint="CVV" 
+                                 Style="{StaticResource MaterialDesignOutlinedPasswordBox}" MaxLength="3"/>
+                </Grid>
+
+                <TextBox x:Name="CardHolderName" materialDesign:HintAssist.Hint="שם בעל הכרטיס" 
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}" Margin="0,0,0,30"/>
+
+                <Button x:Name="PayButton" Click="PayButton_Click"
+                        Content="בצע תשלום וסיים הזמנה"
+                        Height="60" FontSize="18" FontWeight="Bold"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Background="#2563EB" Foreground="White"
+                        materialDesign:ButtonAssist.CornerRadius="16">
+                </Button>
+
+                <Button Content="ביטול וחזרה" Margin="0,10,0,0"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        Foreground="#64748B" Click="Cancel_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>
