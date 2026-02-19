@@ -38,8 +38,7 @@ namespace SherioAPP.pages
 
         private void MyBookings_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("מעבר לדף ההזמנות שלך...");
-            // NavigationService.Navigate(new MyBookings());
+            NavigationService.Navigate(new MyOrdersPage());
         }
 
         private void Logout_Click(object sender, RoutedEventArgs e)

@@ -30,7 +30,7 @@ namespace SherioAPP.pages
             int bookedCount = bookings.Count(b =>
                 b.RoomID != 0 &&
                 b.RoomID == roomId &&
-                b.Status != "Cancelled" &&
+                b.Status != BookingStatus.Cancelled &&
                 !(b.EndDate <= checkIn || b.StartDate >= checkOut)
             );
 

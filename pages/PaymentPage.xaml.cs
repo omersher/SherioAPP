@@ -3,7 +3,6 @@ using Model;
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
 
 namespace SherioAPP.pages
 {
@@ -32,46 +31,87 @@ namespace SherioAPP.pages
         {
             if (App.CurrentUser == null)
             {
-                MessageBox.Show("יש להתחבר לפני ביצוע הזמנה");
+                MessageBox.Show("You must login before making a booking.");
                 return;
             }
 
+            MessageBox.Show(
+    "User ID: " + App.CurrentUser.Id + "\n" +
+    "Room ID: " + _room.Id
+);
+
+            MessageBox.Show(
+    "User Exists: " + (await _api.GetUserByIdAsync(App.CurrentUser.Id) != null)
+);
+
             if (string.IsNullOrWhiteSpace(CardNumber.Text) || CardNumber.Text.Length < 16)
             {
-                MessageBox.Show("נא להזין מספר כרטיס תקין");
+                MessageBox.Show("Please enter a valid 16-digit card number.");
+                return;
+            }
+
+            if (_checkOut <= _checkIn)
+            {
+                MessageBox.Show("Invalid dates selected.");
                 return;
             }
 
             PayButton.IsEnabled = false;
-            PayButton.Content = "מעבד תשלום...";
+            PayButton.Content = "Processing payment...";
 
             try
             {
+                int nights = (_checkOut - _checkIn).Days;
+                decimal totalPrice = nights * _room.AdultRate;
+
+                // ===== CREATE BOOKING =====
                 var booking = new Booking
                 {
+                    UserID = App.CurrentUser.Id,
                     RoomID = _room.Id,
                     StartDate = _checkIn,
                     EndDate = _checkOut,
                     AdultCount = _adults,
                     ChildCount = _children,
                     CreatedAt = DateTime.Now,
-                    Status = "Confirmed"
+                    Status = BookingStatus.Confirmed
                 };
 
-                int result = await _api.InsertBookingAsync(booking);
+                int bookingId = await _api.InsertBookingAsync(booking);
 
-                if (result > 0)
+                if (bookingId <= 0)
                 {
-                    NavigationService.Navigate(new ThankYouPage(result));
+                    MessageBox.Show("Booking creation failed.");
+                    return;
                 }
-                else
+
+                var payment = new Payment
                 {
-                    MessageBox.Show("חלה שגיאה ביצירת ההזמנה.");
+                    UserID = App.CurrentUser.Id,
+                    BookingID = bookingId,
+                    Amount = totalPrice,
+                    PayMethod = "Credit Card",
+                    CreatedAt = DateTime.Now
+                };
+
+                int paymentResult = await _api.InsertPaymentAsync(payment);
+
+                if (paymentResult <= 0)
+                {
+                    MessageBox.Show("Payment saving failed.");
+                    return;
                 }
+                
+                NavigationService.Navigate(new ThankYouPage(bookingId));
             }
             catch (Exception ex)
             {
-                MessageBox.Show("שגיאה: " + ex.Message);
+                MessageBox.Show("Payment error:\n" + ex.Message);
+            }
+            finally
+            {
+                PayButton.IsEnabled = true;
+                PayButton.Content = "Pay & Finish Booking";
             }
         }
 

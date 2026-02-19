@@ -45,12 +45,12 @@ namespace SherioAPP.pages.AdminPages
                     Id = booking.Id,
                     AdultCount = booking.AdultCount,
                     ChildCount = booking.ChildCount,
-                    Status = "Confirmed"
+                    Status = BookingStatus.Confirmed   // ✅ FIXED
                 };
 
                 await _api.UpdateBookingAsync(dto);
 
-                booking.Status = "Confirmed";
+                booking.Status = BookingStatus.Confirmed;  // ✅ FIXED
                 BookingsGrid.Items.Refresh();
 
                 MessageBox.Show("ההזמנה אושרה בהצלחה!");
@@ -82,12 +82,12 @@ namespace SherioAPP.pages.AdminPages
                     Id = booking.Id,
                     AdultCount = booking.AdultCount,
                     ChildCount = booking.ChildCount,
-                    Status = "Cancelled"
+                    Status = BookingStatus.Cancelled   // already correct
                 };
 
                 await _api.UpdateBookingAsync(dto);
 
-                booking.Status = "Cancelled";
+                booking.Status = BookingStatus.Cancelled;
                 BookingsGrid.Items.Refresh();
 
                 MessageBox.Show("ההזמנה בוטלה.");
@@ -109,7 +109,7 @@ namespace SherioAPP.pages.AdminPages
             }
 
             var filtered = _bookings.Where(b =>
-                (b.Status != null && b.Status.ToLower().Contains(query)) ||
+                b.Status.ToString().ToLower().Contains(query) ||  // ✅ FIXED
                 b.UserID.ToString().Contains(query) ||
                 b.RoomID.ToString().Contains(query)
             ).ToList();

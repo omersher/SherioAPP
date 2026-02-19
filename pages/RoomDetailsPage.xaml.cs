@@ -63,15 +63,20 @@ namespace SherioAPP.pages
 
         private void BookRoom_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(
-                new CheckOutPage(
-                    (Room)DataContext,
-                    App.CheckInDate,
-                    App.CheckOutDate,
-                    App.Adults,
-                    App.Children
-                )
-            );
+            if (DataContext is Room room)
+            {
+                App.SelectedRoomId = room.Id;
+
+                NavigationService.Navigate(
+                    new PaymentPage(
+                        room,
+                        App.CheckInDate,
+                        App.CheckOutDate,
+                        App.Adults,
+                        App.Children
+                    )
+                );
+            }
         }
 
         private BitmapImage CreateBitmap(string url)

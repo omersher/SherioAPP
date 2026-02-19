@@ -61,19 +61,28 @@
                     <DataGridTextColumn Header="עיר" Binding="{Binding City.CityName}" IsReadOnly="True" Width="*"/>
                     <DataGridTextColumn Header="כתובת" Binding="{Binding StreetAddress}" Width="1.5*"/>
 
-                    <DataGridTemplateColumn Header="דירוג" Width="80">
+                    <DataGridTemplateColumn Header="כוכבים" Width="60">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding StarRating}" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                    <materialDesign:PackIcon Kind="Star" Foreground="#F59E0B" Width="14" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding StarRating}" VerticalAlignment="Center"/>
+                                    <materialDesign:PackIcon Kind="Star" Foreground="#F59E0B" Width="12" Margin="2,0,0,0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridCheckBoxColumn Header="בריכה" Binding="{Binding HasPool}" Width="70"/>
-                    <DataGridCheckBoxColumn Header="כושר" Binding="{Binding HasGym}" Width="70"/>
+                    <DataGridTemplateColumn Header="שירותים" Width="110">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Pool" Opacity="{Binding HasPool, Converter={StaticResource BooleanToOpacityConverter}}" Margin="2,0" Foreground="#2563EB" ToolTip="בריכה"/>
+                                    <materialDesign:PackIcon Kind="WeightLifter" Opacity="{Binding HasGym, Converter={StaticResource BooleanToOpacityConverter}}" Margin="2,0" Foreground="#2563EB" ToolTip="חדר כושר"/>
+                                    <materialDesign:PackIcon Kind="SilverwareForkKnife" Opacity="{Binding HasRestaurant, Converter={StaticResource BooleanToOpacityConverter}}" Margin="2,0" Foreground="#2563EB" ToolTip="מסעדה"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
                     <DataGridTemplateColumn Header="פעולות" Width="120">
                         <DataGridTemplateColumn.CellTemplate>
