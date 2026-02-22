@@ -68,7 +68,7 @@ namespace SherioAPP.pages
                 App.SelectedRoomId = room.Id;
 
                 NavigationService.Navigate(
-                    new PaymentPage(
+                    new CheckOutPage(
                         room,
                         App.CheckInDate,
                         App.CheckOutDate,

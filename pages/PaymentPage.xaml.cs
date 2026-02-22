@@ -20,9 +20,9 @@ namespace SherioAPP.pages
         {
             InitializeComponent();
 
-            _room = room;
-            _checkIn = start;
-            _checkOut = end;
+            _room = room ?? throw new ArgumentNullException(nameof(room));
+            _checkIn = start.Date;
+            _checkOut = end.Date;
             _adults = adults;
             _children = children;
         }
@@ -31,40 +31,38 @@ namespace SherioAPP.pages
         {
             if (App.CurrentUser == null)
             {
-                MessageBox.Show("You must login before making a booking.");
-                return;
-            }
-
-            MessageBox.Show(
-    "User ID: " + App.CurrentUser.Id + "\n" +
-    "Room ID: " + _room.Id
-);
-
-            MessageBox.Show(
-    "User Exists: " + (await _api.GetUserByIdAsync(App.CurrentUser.Id) != null)
-);
-
-            if (string.IsNullOrWhiteSpace(CardNumber.Text) || CardNumber.Text.Length < 16)
-            {
-                MessageBox.Show("Please enter a valid 16-digit card number.");
+                MessageBox.Show("יש להתחבר קודם.");
                 return;
             }
 
             if (_checkOut <= _checkIn)
             {
-                MessageBox.Show("Invalid dates selected.");
+                MessageBox.Show("תאריכים לא תקינים.");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(CardNumber.Text) || CardNumber.Text.Trim().Length < 16)
+            {
+                MessageBox.Show("תכניס מספר כרטיס תקין (לפחות 16 ספרות).");
                 return;
             }
 
             PayButton.IsEnabled = false;
-            PayButton.Content = "Processing payment...";
 
             try
             {
+                // ==========================
+                // חישוב מחיר
+                // ==========================
                 int nights = (_checkOut - _checkIn).Days;
-                decimal totalPrice = nights * _room.AdultRate;
 
-                // ===== CREATE BOOKING =====
+                decimal totalPrice =
+                    (nights * _room.AdultRate * _adults) +
+                    (nights * _room.ChildRate * _children);
+
+                // ==========================
+                // 1️⃣ יצירת Booking
+                // ==========================
                 var booking = new Booking
                 {
                     UserID = App.CurrentUser.Id,
@@ -81,10 +79,13 @@ namespace SherioAPP.pages
 
                 if (bookingId <= 0)
                 {
-                    MessageBox.Show("Booking creation failed.");
+                    MessageBox.Show("יצירת הזמנה נכשלה.");
                     return;
                 }
 
+                // ==========================
+                // 2️⃣ יצירת Payment
+                // ==========================
                 var payment = new Payment
                 {
                     UserID = App.CurrentUser.Id,
@@ -94,30 +95,38 @@ namespace SherioAPP.pages
                     CreatedAt = DateTime.Now
                 };
 
-                int paymentResult = await _api.InsertPaymentAsync(payment);
+                await _api.InsertPaymentAsync(payment);
 
-                if (paymentResult <= 0)
+                // ==========================
+                // 3️⃣ יצירת RoomAvailability
+                // ==========================
+                var roomAvailability = new RoomAvailability
                 {
-                    MessageBox.Show("Payment saving failed.");
+                    RoomID = _room.Id,
+                    StartDate = _checkIn,
+                    EndDate = _checkOut
+                };
+
+                await _api.InsertRoomAvailabilityAsync(roomAvailability);
+                int raId = await _api.InsertRoomAvailabilityAsync(roomAvailability);
+
+                if (raId <= 0)
+                {
+                    MessageBox.Show("RoomAvailability לא נשמר");
                     return;
                 }
-                
+
+
                 NavigationService.Navigate(new ThankYouPage(bookingId));
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Payment error:\n" + ex.Message);
+                MessageBox.Show("שגיאה:\n" + ex.Message);
             }
             finally
             {
                 PayButton.IsEnabled = true;
-                PayButton.Content = "Pay & Finish Booking";
             }
-        }
-
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.GoBack();
         }
     }
 }

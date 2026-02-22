@@ -45,9 +45,6 @@
                         materialDesign:ButtonAssist.CornerRadius="16">
                 </Button>
 
-                <Button Content="ביטול וחזרה" Margin="0,10,0,0"
-                        Style="{StaticResource MaterialDesignFlatButton}"
-                        Foreground="#64748B" Click="Cancel_Click"/>
             </StackPanel>
         </Border>
     </Grid>
