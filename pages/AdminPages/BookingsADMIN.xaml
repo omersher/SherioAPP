@@ -14,7 +14,12 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="ניהול הזמנות" FontSize="24" FontWeight="Bold" Foreground="#1E293B" Margin="0,0,0,12"/>
-
+        <Button Content="⬅ חזרה לפאנל"
+        Width="150"
+        Height="35"
+        HorizontalAlignment="Right"
+        Margin="0,0,0,10"
+        Click="BackToAdmin_Click"/>
         <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="10,2" Margin="0,0,0,15" BorderBrush="#E2E8F0" BorderThickness="1">
             <DockPanel>
                 <materialDesign:PackIcon Kind="Magnify" Foreground="#94A3B8" VerticalAlignment="Center" Margin="5,0"/>

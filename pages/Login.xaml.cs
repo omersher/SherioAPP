@@ -13,6 +13,10 @@ namespace SherioAPP.pages
         public Login()
         {
             InitializeComponent();
+
+            var main = Application.Current.MainWindow as MainWindow;
+            if (main != null)
+                main.BackButton.Visibility = Visibility.Collapsed;
         }
 
         private async void Login_Click(object sender, RoutedEventArgs e)
@@ -22,7 +26,10 @@ namespace SherioAPP.pages
             string email = EmailBox.Text.Trim();
             string password = PasswordBoxInput.Password.Trim();
 
-            // ===== התחברות מנהל (קשיח בקוד) =====
+            var main = Application.Current.MainWindow as MainWindow;
+            if (main == null) return;
+
+            // ================= ADMIN LOGIN =================
             if (email == "admin@sherio.com" && password == "admin123")
             {
                 App.IsAdmin = true;
@@ -32,14 +39,15 @@ namespace SherioAPP.pages
                     Email = email
                 };
 
-                var mainAdmin = Application.Current.MainWindow as MainWindow;
-                if (mainAdmin != null)
-                    mainAdmin.MainFrame.Navigate(new AdminPage());
+                ClearNavigationHistory(main);
+
+                main.MainFrame.Navigate(new AdminPage());
+                main.SetAdminMode(true);
 
                 return;
             }
 
-            // ===== התחברות רגילה דרך API =====
+            // ================= NORMAL USER LOGIN =================
             try
             {
                 UserList users = await apiClient.GetAllUsersAsync();
@@ -53,9 +61,10 @@ namespace SherioAPP.pages
                     App.IsAdmin = false;
                     App.CurrentUser = user;
 
-                    var main = Application.Current.MainWindow as MainWindow;
-                    if (main != null)
-                        main.MainFrame.Navigate(new HomePage());
+                    ClearNavigationHistory(main);
+
+                    main.MainFrame.Navigate(new HomePage());
+                    main.SetAdminMode(false);
 
                     return;
                 }
@@ -70,11 +79,22 @@ namespace SherioAPP.pages
             }
         }
 
+        // ================= ניקוי מלא של היסטוריית ניווט =================
+        private void ClearNavigationHistory(MainWindow main)
+        {
+            var nav = main.MainFrame.NavigationService;
+
+            if (nav != null)
+            {
+                while (nav.CanGoBack)
+                    nav.RemoveBackEntry();
+            }
+        }
+
         private void Register_Click(object sender, RoutedEventArgs e)
         {
             var main = Application.Current.MainWindow as MainWindow;
-            if (main != null)
-                main.MainFrame.Navigate(new Register());
+            main?.MainFrame.Navigate(new Register());
         }
 
         private void ForgotPassword_Click(object sender, RoutedEventArgs e)
@@ -93,12 +113,6 @@ namespace SherioAPP.pages
         {
             EmailBox.Text = "admin@sherio.com";
             PasswordBoxInput.Password = "admin123";
-        }
-
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

@@ -45,10 +45,25 @@ namespace SherioAPP.pages
         // התנתקות וחזרה לדף הבית
         private void Logout_Click(object sender, RoutedEventArgs e)
         {
-            App.CurrentUser = null;
-            App.CurrentHotel = null;
+            var main = Application.Current.MainWindow as MainWindow;
 
-            NavigationService?.Navigate(new HomePage());
+            if (main != null)
+            {
+                main.SetAdminMode(false);
+
+                // נקה את כל היסטוריית הניווט
+                var nav = main.MainFrame.NavigationService;
+
+                if (nav != null)
+                {
+                    while (nav.CanGoBack)
+                        nav.RemoveBackEntry();
+                }
+
+                // ניווט ללוגין
+                main.MainFrame.Navigate(new HomePage());
+                main.SetAdminMode(false);
+            }
         }
     }
 }

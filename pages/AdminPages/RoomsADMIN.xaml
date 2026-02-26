@@ -18,6 +18,12 @@
                 <TextBox x:Name="SearchBox" FontSize="14" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" Tag="חפש חדר לפי סוג או מלון..."/>
             </DockPanel>
         </Border>
+        <Button Content="⬅ חזרה לפאנל"
+        Width="150"
+        Height="35"
+        HorizontalAlignment="Right"
+        Margin="0,0,0,10"
+        Click="BackToAdmin_Click"/>
 
         <DataGrid Grid.Row="2" x:Name="RoomsGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" RowHeight="45" Background="White" BorderThickness="0">
             <DataGrid.Columns>

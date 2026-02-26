@@ -11,6 +11,7 @@ namespace SherioAPP.pages.OwnerPages
     {
         private readonly ApiService _api = new ApiService();
         private ObservableCollection<Room> _rooms = new();
+        private Room? _selectedRoom;
 
         public RoomsManagementPage()
         {
@@ -20,71 +21,79 @@ namespace SherioAPP.pages.OwnerPages
 
         private async void RoomsManagementPage_Loaded(object sender, RoutedEventArgs e)
         {
-            if (App.CurrentHotel == null)
-            {
-                MessageBox.Show("לא נבחר מלון");
-                return;
-            }
+            var rooms = await _api.GetRoomsByHotelIdAsync(App.CurrentHotel.Id);
+            _rooms = new ObservableCollection<Room>(rooms);
+            RoomsGrid.ItemsSource = _rooms;
+        }
 
-            try
+        private async void OpenImages_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is Room room)
             {
-                // ✅ שליפה רק של חדרים למלון הנבחר
-                var rooms =
-                    await _api.GetRoomsByHotelIdAsync(App.CurrentHotel.Id);
+                _selectedRoom = room;
 
-                _rooms = new ObservableCollection<Room>(rooms);
-                RoomsGrid.ItemsSource = _rooms;
+                var images = await _api.GetRoomImagesByRoomIdAsync(room.Id);
+                PopupImagesGrid.ItemsSource = images;
+
+                ImagesDialogHost.IsOpen = true;
             }
-            catch (Exception ex)
+        }
+
+        private async void AddPopupImage_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedRoom == null) return;
+            if (string.IsNullOrWhiteSpace(PopupUrlBox.Text)) return;
+
+            var dto = new RoomImageInsertDto
             {
-                MessageBox.Show("שגיאה בטעינת החדרים:\n" + ex.Message);
+                RoomId = _selectedRoom.Id,
+                ImageUrl = PopupUrlBox.Text
+            };
+
+            await _api.InsertRoomImageAsync(dto);
+
+            PopupUrlBox.Text = "";
+
+            var images = await _api.GetRoomImagesByRoomIdAsync(_selectedRoom.Id);
+            PopupImagesGrid.ItemsSource = images;
+        }
+
+        private async void DeletePopupImage_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int id)
+            {
+                await _api.DeleteRoomImageAsync(id);
+
+                if (_selectedRoom != null)
+                {
+                    var images = await _api.GetRoomImagesByRoomIdAsync(_selectedRoom.Id);
+                    PopupImagesGrid.ItemsSource = images;
+                }
             }
+        }
+
+        private void CloseDialog_Click(object sender, RoutedEventArgs e)
+        {
+            ImagesDialogHost.IsOpen = false;
         }
 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
-            try
+            foreach (var room in _rooms)
             {
-                RoomsGrid.CommitEdit(DataGridEditingUnit.Row, true);
-                RoomsGrid.CommitEdit();
-
-                foreach (var room in _rooms)
+                var dto = new RoomUpdateDto
                 {
-                    if (room == null)
-                        continue;
+                    Id = room.Id,
+                    RoomName = room.RoomName,
+                    AdultRate = room.AdultRate,
+                    ChildRate = room.ChildRate,
+                    HotelId = App.CurrentHotel.Id
+                };
 
-                    if (room.AdultRate < 0)
-                    {
-                        MessageBox.Show($"מחיר לא תקין בחדר {room.RoomName}");
-                        return;
-                    }
-
-                    // ✅ DTO בלבד – בלי אובייקט Hotel
-                    var dto = new RoomUpdateDto
-                    {
-                        Id = room.Id,
-                        RoomName = room.RoomName,
-                        AdultRate = room.AdultRate,
-                        ChildRate = room.ChildRate,
-                        Bedrooms = room.Bedrooms,
-                        Bathrooms = room.Bathrooms,
-                        HasKitchen = room.HasKitchen,
-                        HasParking = room.HasParking,
-                        HasBalcony = room.HasBalcony,
-                        HasLivingRoom = room.HasLivingRoom,
-                        TotalUnits = room.TotalUnits,
-                        HotelId = App.CurrentHotel.Id
-                    };
-
-                    await _api.UpdateRoomAsync(dto);
-                }
-
-                MessageBox.Show("החדרים עודכנו בהצלחה");
+                await _api.UpdateRoomAsync(dto);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("שגיאה בשמירה:\n" + ex.Message);
-            }
+
+            MessageBox.Show("נשמר בהצלחה");
         }
     }
 }

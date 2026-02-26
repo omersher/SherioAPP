@@ -9,102 +9,100 @@
         Width="800"
         Height="500">
 
-    <Window.Resources>
-        <Style TargetType="ScrollBar">
-            <Setter Property="Visibility" Value="Collapsed"/>
-        </Style>
-    </Window.Resources>
-
     <Border Background="White">
-
-        <Grid>
+        <Grid x:Name="RootGrid">
 
             <!-- כפתור יציאה -->
-            <Button Width="32"
-        Height="32"
-        HorizontalAlignment="Left"
-        VerticalAlignment="Top"
-        Margin="10"
-        Panel.ZIndex="999"
-        Cursor="Hand"
-        Click="Exit_Click"
-        Background="Transparent"
-        BorderThickness="0"
-        ToolTip="יציאה מהאפליקציה">
+            <Button x:Name="ExitButton"
+                    Width="32"
+                    Height="32"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="10"
+                    Panel.ZIndex="999"
+                    Cursor="Hand"
+                    Click="Exit_Click"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    ToolTip="יציאה מהאפליקציה">
 
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="Root"
-                    Width="32"
-                    Height="32"
-                    Background="Transparent"
-                    CornerRadius="16">
+                                Width="32"
+                                Height="32"
+                                Background="Transparent"
+                                CornerRadius="16">
+
                             <materialDesign:PackIcon
-                    x:Name="Icon"
-                    Kind="Close"
-                    Width="18"
-                    Height="18"
-                    Foreground="#6B7280"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"/>
+                                x:Name="Icon"
+                                Kind="Close"
+                                Width="18"
+                                Height="18"
+                                Foreground="#6B7280"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
                         </Border>
 
                         <ControlTemplate.Triggers>
+
                             <!-- Hover -->
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Root"
-                            Property="Background"
-                            Value="#FEE2E2"/>
+                                        Property="Background"
+                                        Value="#F3F4F6"/>
                                 <Setter TargetName="Icon"
-                            Property="Foreground"
-                            Value="#DC2626"/>
+                                        Property="Foreground"
+                                        Value="#374151"/>
                             </Trigger>
 
                             <!-- Click -->
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="Root"
-                            Property="Background"
-                            Value="#FECACA"/>
+                                        Property="Background"
+                                        Value="#E5E7EB"/>
                             </Trigger>
+
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Button.Template>
             </Button>
 
-            <!-- כאן נטענים העמודים -->
+            <!-- Frame -->
             <Frame x:Name="MainFrame"
-                   NavigationUIVisibility="Hidden"/>
-
+                      NavigationUIVisibility="Hidden"
+                      JournalOwnership="OwnsJournal"/>
             <!-- כפתור חזרה -->
-            <Button Width="32"
-        Height="32"
-        HorizontalAlignment="Left"
-        VerticalAlignment="Top"
-        Margin="52,10,0,0"
-        Panel.ZIndex="999"
-        Cursor="Hand"
+            <Button x:Name="BackButton"
+                    Width="32"
+                    Height="32"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="52,10,0,0"
+                    Panel.ZIndex="999"
+                    Cursor="Hand"
                     IsEnabled="{Binding ElementName=MainFrame, Path=CanGoBack}"
-        Click="Back_Click"
-        Background="Transparent"
-        BorderThickness="0"
-        ToolTip="חזרה למסך הקודם">
+                    Click="Back_Click"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    ToolTip="חזרה למסך הקודם">
 
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="Root"
-                    Width="32"
-                    Height="32"
-                    Background="Transparent"
-                    CornerRadius="16">
+                                Width="32"
+                                Height="32"
+                                Background="Transparent"
+                                CornerRadius="16">
 
                             <materialDesign:PackIcon
-                    x:Name="Icon"
-                    Kind="ArrowRight"
-                    Width="18"
-                    Height="18"
-                    Foreground="#6B7280"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"/>
+                                x:Name="Icon"
+                                Kind="ArrowRight"
+                                Width="18"
+                                Height="18"
+                                Foreground="#6B7280"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
                         </Border>
 
                         <ControlTemplate.Triggers>
@@ -112,25 +110,25 @@
                             <!-- Hover -->
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Root"
-                            Property="Background"
-                            Value="#E0E7FF"/>
+                                        Property="Background"
+                                        Value="#F3F4F6"/>
                                 <Setter TargetName="Icon"
-                            Property="Foreground"
-                            Value="#2563EB"/>
+                                        Property="Foreground"
+                                        Value="#2563EB"/>
                             </Trigger>
 
                             <!-- Click -->
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="Root"
-                            Property="Background"
-                            Value="#C7D2FE"/>
+                                        Property="Background"
+                                        Value="#E5E7EB"/>
                             </Trigger>
 
                             <!-- Disable -->
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="Icon"
-                            Property="Foreground"
-                            Value="#D1D5DB"/>
+                                        Property="Foreground"
+                                        Value="#D1D5DB"/>
                             </Trigger>
 
                         </ControlTemplate.Triggers>
@@ -139,6 +137,5 @@
             </Button>
 
         </Grid>
-
     </Border>
 </Window>

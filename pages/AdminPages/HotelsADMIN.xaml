@@ -17,11 +17,18 @@
                        FontSize="28"
                        FontWeight="Bold"
                        Foreground="#0F172A"/>
+            
             <TextBlock Text="ערוך, מחק או נהל את רשימת המלונות במערכת"
                        FontSize="14"
                        Foreground="#64748B"
                        Margin="0,4,0,0"/>
         </StackPanel>
+        <Button Content="⬅ חזרה לפאנל"
+        Width="150"
+        Height="35"
+        HorizontalAlignment="Right"
+        Margin="0,0,0,10"
+        Click="BackToAdmin_Click"/>
 
         <Border Grid.Row="1" Background="White" CornerRadius="10" Padding="8,4" Margin="0,0,0,20" 
                 BorderBrush="#E2E8F0" BorderThickness="1">
@@ -76,7 +83,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="Pool" Opacity="{Binding HasPool, Converter={StaticResource BooleanToOpacityConverter}}" Margin="2,0" Foreground="#2563EB" ToolTip="בריכה"/>
+                                    <!--<materialDesign:PackIcon Kind="Pool" Opacity="{Binding HasPool, Converter={StaticResource BooleanToOpacityConverter}}" Margin="2,0" Foreground="#2563EB" ToolTip="בריכה"/>-->
                                     <materialDesign:PackIcon Kind="WeightLifter" Opacity="{Binding HasGym, Converter={StaticResource BooleanToOpacityConverter}}" Margin="2,0" Foreground="#2563EB" ToolTip="חדר כושר"/>
                                     <materialDesign:PackIcon Kind="SilverwareForkKnife" Opacity="{Binding HasRestaurant, Converter={StaticResource BooleanToOpacityConverter}}" Margin="2,0" Foreground="#2563EB" ToolTip="מסעדה"/>
                                 </StackPanel>

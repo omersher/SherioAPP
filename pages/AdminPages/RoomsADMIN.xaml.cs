@@ -24,5 +24,12 @@ namespace SherioAPP.pages.AdminPages
         {
             InitializeComponent();
         }
+        private void BackToAdmin_Click(object sender, RoutedEventArgs e)
+        {
+            var main = Application.Current.MainWindow as MainWindow;
+
+            if (main != null)
+                main.MainFrame.Navigate(new AdminPage());
+        }
     }
 }

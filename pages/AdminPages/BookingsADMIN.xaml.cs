@@ -18,7 +18,22 @@ namespace SherioAPP.pages.AdminPages
             InitializeComponent();
             Loaded += BookingsADMIN_Loaded;
         }
+        private void BackToAdmin_Click(object sender, RoutedEventArgs e)
+        {
+            var main = Application.Current.MainWindow as MainWindow;
 
+            if (main == null) return;
+
+            var nav = main.MainFrame.NavigationService;
+
+            if (nav != null)
+            {
+                while (nav.CanGoBack)
+                    nav.RemoveBackEntry();
+            }
+
+            main.MainFrame.Navigate(new AdminPage());
+        }
         private async void BookingsADMIN_Loaded(object sender, RoutedEventArgs e)
         {
             try
