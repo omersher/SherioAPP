@@ -20,7 +20,7 @@ namespace SherioAPP
 
         private void MainFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            // אם אדמין - לא נוגעים בכלל בכפתורים
+            // אם אדמין - לא נוגעים בכלל בכפתורים     
             if (_isAdminMode)
                 return; 
 
