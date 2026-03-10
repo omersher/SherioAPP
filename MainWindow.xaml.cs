@@ -22,7 +22,7 @@ namespace SherioAPP
         {
             // אם אדמין - לא נוגעים בכלל בכפתורים
             if (_isAdminMode)
-                return;
+                return; 
 
             // אם HomePage - אין חץ
             if (e.Content is pages.HomePage)
