@@ -47,23 +47,33 @@ namespace SherioAPP.pages
         {
             var main = Application.Current.MainWindow as MainWindow;
 
+            Logout();
+
             if (main != null)
             {
                 main.SetAdminMode(false);
 
-                // נקה את כל היסטוריית הניווט
                 var nav = main.MainFrame.NavigationService;
-
                 if (nav != null)
                 {
                     while (nav.CanGoBack)
                         nav.RemoveBackEntry();
                 }
 
-                // ניווט ללוגין
                 main.MainFrame.Navigate(new HomePage());
-                main.SetAdminMode(false);
             }
+        }
+
+        public static void Logout()
+        {
+            App.CurrentUser = null;
+            App.IsAdmin = false;
+            App.CurrentHotel = null;
+            App.CheckInDate = DateTime.MinValue;
+            App.CheckOutDate = DateTime.MinValue;
+            App.Adults = 0;
+            App.Children = 0;
+            App.SelectedRoomId = 0;
         }
     }
 }

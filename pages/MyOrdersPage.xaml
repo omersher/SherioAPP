@@ -15,19 +15,12 @@
 
         <materialDesign:Card Grid.Row="0" Background="White" Padding="10" UniformCornerRadius="0">
             <Grid>
-                <Button HorizontalAlignment="Left"
-                        Style="{StaticResource MaterialDesignFlatButton}"
-                        Click="Back_Click"
-                        Foreground="#3B82F6">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="ArrowRight" VerticalAlignment="Center"/>
-                        <TextBlock Text="חזרה" Margin="8,0,0,0" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
 
                 <TextBlock Text="ההזמנות שלי"
-                           FontSize="20" FontWeight="Bold"
-                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                           FontSize="20"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
             </Grid>
         </materialDesign:Card>
 
@@ -43,25 +36,36 @@
                                 <Grid Margin="0,0,0,10">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
                                     <!-- Status Badge -->
                                     <Border Padding="8,4"
-                        CornerRadius="12"
-                        Background="#E5E7EB">
+                                            CornerRadius="12"
+                                            Background="#E5E7EB">
                                         <TextBlock Text="{Binding Status}"
-                               FontWeight="Bold"
-                               FontSize="13"
-                               Foreground="#111827"/>
+                                                   FontWeight="Bold"
+                                                   FontSize="13"
+                                                   Foreground="#111827"/>
                                     </Border>
 
-                                    <!-- Room -->
+                                    <!-- Order ID -->
                                     <TextBlock Grid.Column="1"
-                           Text="{Binding RoomID, StringFormat=חדר מספר {0}}"
-                           HorizontalAlignment="Left"
-                           FontWeight="SemiBold"
-                           Foreground="#374151"/>
+                                               Text="{Binding Id, StringFormat=הזמנה #{0}}"
+                                               Margin="10,0,0,0"
+                                               VerticalAlignment="Center"
+                                               FontSize="13"
+                                               FontWeight="Bold"
+                                               Foreground="#2563EB"/>
+
+                                    <!-- Room -->
+                                    <TextBlock Grid.Column="2"
+                                               Text="{Binding RoomID, StringFormat=חדר מספר {0}}"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               FontWeight="SemiBold"
+                                               Foreground="#374151"/>
                                 </Grid>
 
                                 <Separator Margin="0,5,0,15" Background="#EEE"/>
@@ -75,41 +79,38 @@
 
                                     <StackPanel Grid.Column="0">
                                         <TextBlock Text="צ'ק-אין"
-                               FontSize="12"
-                               Foreground="Gray"/>
+                                                   FontSize="12"
+                                                   Foreground="Gray"/>
                                         <TextBlock Text="{Binding StartDate, StringFormat={}{0:dd/MM/yyyy}}"
-                               FontSize="15"
-                               FontWeight="Medium"/>
+                                                   FontSize="15"
+                                                   FontWeight="Medium"/>
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1">
                                         <TextBlock Text="צ'ק-אאוט"
-                               FontSize="12"
-                               Foreground="Gray"/>
+                                                   FontSize="12"
+                                                   Foreground="Gray"/>
                                         <TextBlock Text="{Binding EndDate, StringFormat={}{0:dd/MM/yyyy}}"
-                               FontSize="15"
-                               FontWeight="Medium"/>
+                                                   FontSize="15"
+                                                   FontWeight="Medium"/>
                                     </StackPanel>
                                 </Grid>
 
                                 <!-- Cancel Button -->
                                 <Button Content="בטל הזמנה"
-                    Margin="0,10,0,0"
-                    Height="38"
-                    Background="#EF4444"
-                    Foreground="White"
-                    Click="CancelBooking_Click"
-                    Tag="{Binding}">
+                                        Margin="0,10,0,0"
+                                        Height="38"
+                                        Background="#EF4444"
+                                        Foreground="White"
+                                        Click="CancelBooking_Click"
+                                        Tag="{Binding}">
                                     <Button.Style>
                                         <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
                                             <Setter Property="Visibility" Value="Visible"/>
                                             <Style.Triggers>
-
-                                                <!-- Hide if already cancelled -->
                                                 <DataTrigger Binding="{Binding Status}" Value="Cancelled">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                 </DataTrigger>
-
                                             </Style.Triggers>
                                         </Style>
                                     </Button.Style>

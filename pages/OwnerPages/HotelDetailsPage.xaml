@@ -12,7 +12,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
         <StackPanel Margin="10,0,0,15">
             <TextBlock x:Name="HeaderName"
                        Text="שם המלון"
@@ -30,11 +29,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- IMAGE CARD -->
             <materialDesign:Card Grid.Column="0"
                                  Margin="0,0,10,5"
                                  UniformCornerRadius="16">
-
                 <Grid>
                     <Image x:Name="PreviewImage"
                            Stretch="UniformToFill"/>
@@ -52,7 +49,6 @@
                 </Grid>
             </materialDesign:Card>
 
-            <!-- FORM CARD -->
             <materialDesign:Card Grid.Column="1"
                                  Padding="15"
                                  UniformCornerRadius="12"
@@ -87,28 +83,10 @@
                                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                  Margin="0,0,0,10"/>
 
-                        <TextBlock Text="תמונת המלון"
-                                   Margin="0,5,0,5"
+                        <TextBlock Text="תמונה ראשית של המלון"
+                                   Margin="0,5,0,12"
                                    FontWeight="Bold"
                                    Foreground="#64748B"/>
-
-                        <StackPanel Orientation="Horizontal"
-                                    Margin="0,0,0,15">
-                            <Button Content="בחר קובץ"
-                                    Click="UploadBtn_Click"
-                                    Style="{StaticResource MaterialDesignFlatMidBgButton}"
-                                    Background="#E2E8F0"
-                                    Foreground="#1E293B"
-                                    Height="35"
-                                    Width="100"/>
-
-                            <TextBlock x:Name="FileNameLabel"
-                                       Text="לא נבחר קובץ חדש"
-                                       VerticalAlignment="Center"
-                                       Margin="10,0"
-                                       FontSize="11"
-                                       Foreground="#94A3B8"/>
-                        </StackPanel>
 
                         <StackPanel Orientation="Horizontal"
                                     Margin="0,0,0,20">

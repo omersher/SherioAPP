@@ -1,8 +1,6 @@
 ﻿using ApiInterface;
 using Model;
-using Microsoft.Win32;
 using System;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -14,16 +12,10 @@ namespace SherioAPP.pages.OwnerPages
         private readonly ApiService _api = new ApiService();
         private readonly Hotel _hotel;
 
-        private string _base64ImageData = null;
-        private string _originalImageLink;
-
         public HotelDetailsPage(Hotel hotel)
         {
             InitializeComponent();
-
             _hotel = hotel;
-            _originalImageLink = hotel.MainHotelImageLink;
-
             LoadHotelData();
         }
 
@@ -34,7 +26,6 @@ namespace SherioAPP.pages.OwnerPages
             EmailBox.Text = _hotel.Email;
             WebsiteBox.Text = _hotel.WebSite;
             AddressBox.Text = _hotel.StreetAddress;
-
             PoolCheck.IsChecked = _hotel.HasPool;
             GymCheck.IsChecked = _hotel.HasGym;
             RestaurantCheck.IsChecked = _hotel.HasRestaurant;
@@ -47,55 +38,31 @@ namespace SherioAPP.pages.OwnerPages
 
         private void LoadImageFromUrl(string imageUrl)
         {
-            if (string.IsNullOrEmpty(imageUrl))
+            if (string.IsNullOrWhiteSpace(imageUrl))
+            {
+                PreviewImage.Source = null;
                 return;
+            }
 
             try
             {
-                BitmapImage bitmap = new BitmapImage();
+                var uri = new Uri(imageUrl, UriKind.Absolute);
+                var bitmap = new BitmapImage();
+
                 bitmap.BeginInit();
-                bitmap.UriSource = new Uri(imageUrl, UriKind.RelativeOrAbsolute);
+                bitmap.UriSource = uri;
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
                 bitmap.EndInit();
 
                 PreviewImage.Source = bitmap;
             }
-            catch
+            catch (Exception ex)
             {
                 PreviewImage.Source = null;
+                MessageBox.Show("שגיאה בטעינת תמונה:\n" + ex.Message + "\n\nURL:\n" + imageUrl);
             }
         }
-
-        private void UploadBtn_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "Image files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg";
-
-            if (dialog.ShowDialog() == true)
-            {
-                try
-                {
-                    string filePath = dialog.FileName;
-                    FileNameLabel.Text = Path.GetFileName(filePath);
-
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.UriSource = new Uri(filePath);
-                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmap.EndInit();
-
-                    PreviewImage.Source = bitmap;
-
-                    byte[] imageBytes = File.ReadAllBytes(filePath);
-                    _base64ImageData = Convert.ToBase64String(imageBytes);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("שגיאה בטעינת התמונה: " + ex.Message);
-                }
-            }
-        }
-
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
             var dto = new HotelUpdateDto
@@ -106,9 +73,7 @@ namespace SherioAPP.pages.OwnerPages
                 Email = EmailBox.Text,
                 WebSite = WebsiteBox.Text,
                 StreetAddress = AddressBox.Text,
-                MainHotelImageLink = !string.IsNullOrEmpty(_base64ImageData)
-                    ? _base64ImageData
-                    : _originalImageLink,
+                MainHotelImageLink = _hotel.MainHotelImageLink,
                 HasPool = PoolCheck.IsChecked == true,
                 HasGym = GymCheck.IsChecked == true,
                 HasRestaurant = RestaurantCheck.IsChecked == true,
@@ -128,8 +93,11 @@ namespace SherioAPP.pages.OwnerPages
 
         private void NameBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            HeaderName.Text = NameBox.Text;
-            ImageOverlayName.Text = NameBox.Text;
+            if (HeaderName != null)
+                HeaderName.Text = NameBox.Text;
+
+            if (ImageOverlayName != null)
+                ImageOverlayName.Text = NameBox.Text;
         }
     }
 }

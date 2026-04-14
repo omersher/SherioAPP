@@ -201,8 +201,14 @@ namespace SherioAPP.pages
         {
             if (App.CurrentUser == null)
             {
-                MessageBox.Show("עליך להתחבר כדי לבצע חיפוש");
+                MessageBox.Show("עליך להתחבר כמשתמש כדי לבצע חיפוש");
                 NavigationService.Navigate(new Login());
+                return;
+            }
+
+            if (App.IsAdmin || App.CurrentUser.IsOwner)
+            {
+                MessageBox.Show("רק משתמש רגיל יכול לבצע חיפוש");
                 return;
             }
 

@@ -9,102 +9,112 @@
              MinHeight="200">
 
     <Border Margin="15,8"
-            CornerRadius="16"
+            CornerRadius="12"
             Background="White"
-            BorderBrush="#F3F4F6"
+            BorderBrush="#E5E7EB"
             BorderThickness="1">
 
         <Border.Effect>
-            <DropShadowEffect BlurRadius="15"
-                              ShadowDepth="2"
-                              Opacity="0.08"
+            <DropShadowEffect BlurRadius="12"
+                              ShadowDepth="1"
+                              Opacity="0.05"
                               Color="Black"/>
         </Border.Effect>
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="240"/>
+                <ColumnDefinition Width="220"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="180"/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0"
-                    CornerRadius="16,0,0,16"
+                    CornerRadius="12,0,0,12"
                     ClipToBounds="True">
-                <Grid>
-                    <Image Source="{Binding HotelImageLink}"
-       Stretch="UniformToFill"/>
-                    <Border Background="Black" Opacity="0.05"/>
+                <Grid Background="#F3F4F6">
+                    <Image x:Name="HotelMainImage"
+                           Source="{Binding MainHotelImageLink}"
+                           Stretch="UniformToFill"/>
+
+                    <TextBlock x:Name="NoImageText"
+                               Text="אין תמונה"
+                               Foreground="#9CA3AF"
+                               FontSize="14"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Visibility="Collapsed"/>
                 </Grid>
             </Border>
 
             <StackPanel Grid.Column="1" Margin="20,15">
-
                 <TextBlock Text="{Binding Name}"
-                           FontSize="22"
-                           FontWeight="ExtraBold"
-                           Foreground="#1F2937"
-                           TextWrapping="Wrap"/>
+                           FontSize="18"
+                           FontWeight="Bold"
+                           Foreground="#111827"
+                           TextWrapping="NoWrap"
+                           TextTrimming="CharacterEllipsis"/>
 
                 <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                    <materialDesign:PackIcon Kind="MapMarkerOutline" Foreground="#3B82F6" VerticalAlignment="Center" Width="16" Height="16"/>
+                    <materialDesign:PackIcon Kind="MapMarker" Foreground="#3B82F6" Width="14" Height="14" VerticalAlignment="Center"/>
                     <TextBlock Text="{Binding City.CityName}"
-                               FontSize="14"
-                               FontWeight="Medium"
+                               FontSize="13"
                                Foreground="#3B82F6"
-                               Margin="5,0,0,0"/>
+                               FontWeight="SemiBold"
+                               Margin="4,0,0,0"/>
                 </StackPanel>
 
                 <Separator Margin="0,15" Background="#F3F4F6" Height="1"/>
 
-                <StackPanel Orientation="Horizontal" Margin="0,4">
-                    <materialDesign:PackIcon Kind="PhoneOutline" Foreground="#6B7280" Width="14" VerticalAlignment="Center"/>
-                    <TextBlock Text="{Binding PhoneNumber}"
-                               FontSize="13"
-                               Foreground="#6B7280"
-                               Margin="8,0,0,0"/>
+                <StackPanel Orientation="Horizontal" Margin="0,2">
+                    <materialDesign:PackIcon Kind="Phone" Foreground="#6B7280" Width="12" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding PhoneNumber}" FontSize="12" Foreground="#6B7280" Margin="8,0,0,0"/>
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Margin="0,4">
-                    <materialDesign:PackIcon Kind="EmailOutline" Foreground="#6B7280" Width="14" VerticalAlignment="Center"/>
-                    <TextBlock Text="{Binding Email}"
-                               FontSize="13"
-                               Foreground="#6B7280"
-                               Margin="8,0,0,0"/>
+                <StackPanel Orientation="Horizontal" Margin="0,2">
+                    <materialDesign:PackIcon Kind="Email" Foreground="#6B7280" Width="12" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding Email}" FontSize="12" Foreground="#6B7280" Margin="8,0,0,0"/>
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Margin="0,4">
-                    <materialDesign:PackIcon Kind="Web" Foreground="#3B82F6" Width="14" VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" Margin="0,2">
+                    <materialDesign:PackIcon Kind="Earth" Foreground="#3B82F6" Width="12" VerticalAlignment="Center"/>
                     <TextBlock Text="{Binding WebSite}" 
-               FontSize="13" 
-               Foreground="#3B82F6" 
-               Margin="8,0,0,0" 
-               TextDecorations="Underline"
-               VerticalAlignment="Center"/>
+                               FontSize="12" 
+                               Foreground="#3B82F6" 
+                               Margin="8,0,0,0" 
+                               TextDecorations="Underline"
+                               Cursor="Hand"/>
                 </StackPanel>
             </StackPanel>
 
             <Border Grid.Column="2" 
                     Background="#F9FAFB" 
-                    CornerRadius="0,16,16,0"
+                    CornerRadius="0,12,12,0"
                     Padding="15">
-                <StackPanel VerticalAlignment="Bottom">
-                    <Button Content="בדוק זמינות"
-        Height="45"
-        Background="#2563EB"
-        Foreground="White"
-        FontWeight="Bold"
-        FontSize="14"
-        BorderThickness="0"
-        Style="{StaticResource MaterialDesignRaisedButton}"
-        Click="CheckAvailability_Click">
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="10"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
-                </StackPanel>
+                <Grid>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="זמין כעת" 
+                                   Foreground="#10B981" 
+                                   FontSize="12" 
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,10"/>
+
+                        <Button Content="בדוק זמינות"
+                                Height="40"
+                                Background="#2563EB"
+                                Foreground="White"
+                                FontWeight="SemiBold"
+                                BorderThickness="0"
+                                Click="CheckAvailability_Click"
+                                materialDesign:ButtonAssist.CornerRadius="8">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                                    <Setter Property="Background" Value="#2563EB"/>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                </Grid>
             </Border>
         </Grid>
     </Border>
