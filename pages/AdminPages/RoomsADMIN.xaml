@@ -3,84 +3,124 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       FlowDirection="RightToLeft"
+      FontFamily="Segoe UI"
       Background="#F8FAFC"
-      Height="500" Width="800">
+      Height="500"
+      Width="800"
+      Title="RoomsADMIN">
 
-    <Grid Margin="15">
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Margin="0,0,0,10">
+        <StackPanel Grid.Row="0" Margin="0,0,0,15">
             <TextBlock Text="ניהול חדרים"
-                       FontSize="22"
-                       FontWeight="ExtraBold"
-                       Foreground="#1E293B"/>
+                       FontSize="26"
+                       FontWeight="Bold"
+                       Foreground="#0F172A"/>
+
+            <TextBlock Text="עריכה, הוספה, חיפוש ושמירה של חדרים במערכת"
+                       FontSize="14"
+                       Foreground="#64748B"
+                       Margin="0,5,0,0"/>
         </StackPanel>
 
-        <Grid Grid.Row="1" Margin="0,0,0,10">
+        <Grid Grid.Row="1" Margin="0,0,0,12">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0"
                     Background="White"
-                    CornerRadius="8"
-                    Padding="8"
+                    CornerRadius="10"
+                    Padding="10"
                     Margin="0,0,10,0"
-                    BorderBrush="#E5E7EB"
+                    BorderBrush="#E2E8F0"
                     BorderThickness="1">
                 <DockPanel>
                     <materialDesign:PackIcon Kind="Magnify"
-                                             Foreground="#2563EB"
-                                             Margin="0,0,5,0"
+                                             Width="20"
+                                             Height="20"
+                                             Margin="0,0,10,0"
+                                             Foreground="#94A3B8"
                                              VerticalAlignment="Center"/>
                     <TextBox x:Name="SearchBox"
-                             FontSize="13"
-                             BorderThickness="0"
                              TextChanged="SearchBox_TextChanged"
-                             materialDesign:HintAssist.Hint="חיפוש לפי שם חדר / מזהה חדר / מזהה מלון..." />
+                             BorderThickness="0"
+                             Background="Transparent"
+                             VerticalContentAlignment="Center"
+                             FontSize="14"
+                             materialDesign:HintAssist.Hint="חיפוש לפי שם חדר / מזהה חדר / מזהה מלון..."
+                             materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"/>
                 </DockPanel>
             </Border>
 
             <Button Grid.Column="1"
-                    Content="💾 שמור"
+                    Content="+ חדש"
+                    Width="95"
+                    Height="38"
+                    Margin="0,0,10,0"
+                    Background="#2563EB"
+                    BorderBrush="#2563EB"
+                    Foreground="White"
+                    Click="AddNewRoom_Click"/>
+
+            <Button Grid.Column="2"
+                    Content="💾 שמור הכל"
+                    Width="120"
+                    Height="38"
+                    Margin="0,0,10,0"
                     Background="#10B981"
                     BorderBrush="#10B981"
                     Foreground="White"
-                    Height="35"
-                    Margin="0,0,5,0"
                     Click="SaveChanges_Click"/>
 
-            <Button Grid.Column="2"
-                    Content="⬅ חזרה"
-                    Width="100"
-                    Height="35"
+            <Button Grid.Column="3"
+                    Content="⬅ חזרה לפאנל"
+                    Width="140"
+                    Height="38"
+                    Background="#E2E8F0"
+                    BorderBrush="#E2E8F0"
+                    Foreground="#0F172A"
                     Click="BackToAdmin_Click"/>
         </Grid>
 
         <Border Grid.Row="2"
                 Background="White"
-                CornerRadius="8"
-                BorderBrush="#E5E7EB"
+                CornerRadius="12"
+                BorderBrush="#E2E8F0"
                 BorderThickness="1">
 
             <DataGrid x:Name="RoomsGrid"
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"
                       IsReadOnly="False"
-                      RowHeight="40"
-                      Background="White"
-                      BorderThickness="0"
                       HeadersVisibility="Column"
                       GridLinesVisibility="Horizontal"
                       HorizontalGridLinesBrush="#F1F5F9"
+                      Background="White"
+                      RowHeight="45"
+                      BorderThickness="0"
+                      FontSize="14"
+                      SelectionUnit="FullRow"
                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                      ScrollViewer.VerticalScrollBarVisibility="Auto">
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      materialDesign:DataGridAssist.CellPadding="10">
+
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                        <Setter Property="Background" Value="#F8FAFC"/>
+                        <Setter Property="Padding" Value="12,14"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Foreground" Value="#475569"/>
+                    </Style>
+                </DataGrid.Resources>
 
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="מזהה"
@@ -88,33 +128,41 @@
                                         IsReadOnly="True"
                                         Width="55"/>
 
-                    <DataGridTextColumn Header="מלון ID"
-                                        Binding="{Binding Hotel.Id}"
-                                        IsReadOnly="True"
-                                        Width="70"/>
+                    <DataGridTemplateColumn Header="מלון ID" Width="80">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Hotel.Id}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Hotel.Id, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
 
                     <DataGridTextColumn Header="שם חדר"
-                                        Binding="{Binding RoomName}"
+                                        Binding="{Binding RoomName, UpdateSourceTrigger=PropertyChanged}"
                                         Width="140"/>
 
                     <DataGridTextColumn Header="מחיר מבוגר"
-                                        Binding="{Binding AdultRate}"
+                                        Binding="{Binding AdultRate, UpdateSourceTrigger=PropertyChanged}"
                                         Width="90"/>
 
                     <DataGridTextColumn Header="מחיר ילד"
-                                        Binding="{Binding ChildRate}"
+                                        Binding="{Binding ChildRate, UpdateSourceTrigger=PropertyChanged}"
                                         Width="90"/>
 
                     <DataGridTextColumn Header="שינה"
-                                        Binding="{Binding Bedrooms}"
+                                        Binding="{Binding Bedrooms, UpdateSourceTrigger=PropertyChanged}"
                                         Width="60"/>
 
                     <DataGridTextColumn Header="מקלחות"
-                                        Binding="{Binding Bathrooms}"
+                                        Binding="{Binding Bathrooms, UpdateSourceTrigger=PropertyChanged}"
                                         Width="70"/>
 
                     <DataGridTextColumn Header="יחידות"
-                                        Binding="{Binding TotalUnits}"
+                                        Binding="{Binding TotalUnits, UpdateSourceTrigger=PropertyChanged}"
                                         Width="65"/>
 
                     <DataGridCheckBoxColumn Header="מטבח"

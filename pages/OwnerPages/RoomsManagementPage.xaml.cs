@@ -2,6 +2,7 @@
 using Model;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,8 +11,7 @@ namespace SherioAPP.pages.OwnerPages
     public partial class RoomsManagementPage : Page
     {
         private readonly ApiService _api = new ApiService();
-        private ObservableCollection<Room> _rooms = new();
-        private Room? _selectedRoom;
+        private ObservableCollection<Room> _rooms = new ObservableCollection<Room>();
 
         public RoomsManagementPage()
         {
@@ -21,79 +21,109 @@ namespace SherioAPP.pages.OwnerPages
 
         private async void RoomsManagementPage_Loaded(object sender, RoutedEventArgs e)
         {
-            var rooms = await _api.GetRoomsByHotelIdAsync(App.CurrentHotel.Id);
-            _rooms = new ObservableCollection<Room>(rooms);
-            RoomsGrid.ItemsSource = _rooms;
+            await LoadRoomsAsync();
         }
 
-        private async void OpenImages_Click(object sender, RoutedEventArgs e)
+        private async Task LoadRoomsAsync()
         {
-            if (sender is Button btn && btn.DataContext is Room room)
+            try
             {
-                _selectedRoom = room;
-
-                var images = await _api.GetRoomImagesByRoomIdAsync(room.Id);
-                PopupImagesGrid.ItemsSource = images;
-
-                ImagesDialogHost.IsOpen = true;
-            }
-        }
-
-        private async void AddPopupImage_Click(object sender, RoutedEventArgs e)
-        {
-            if (_selectedRoom == null) return;
-            if (string.IsNullOrWhiteSpace(PopupUrlBox.Text)) return;
-
-            var dto = new RoomImageInsertDto
-            {
-                RoomId = _selectedRoom.Id,
-                ImageUrl = PopupUrlBox.Text
-            };
-
-            await _api.InsertRoomImageAsync(dto);
-
-            PopupUrlBox.Text = "";
-
-            var images = await _api.GetRoomImagesByRoomIdAsync(_selectedRoom.Id);
-            PopupImagesGrid.ItemsSource = images;
-        }
-
-        private async void DeletePopupImage_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.Tag is int id)
-            {
-                await _api.DeleteRoomImageAsync(id);
-
-                if (_selectedRoom != null)
+                if (App.CurrentHotel == null)
                 {
-                    var images = await _api.GetRoomImagesByRoomIdAsync(_selectedRoom.Id);
-                    PopupImagesGrid.ItemsSource = images;
+                    MessageBox.Show("לא נבחר מלון.");
+                    return;
                 }
-            }
-        }
 
-        private void CloseDialog_Click(object sender, RoutedEventArgs e)
-        {
-            ImagesDialogHost.IsOpen = false;
+                HotelNameTextBlock.Text = "מלון נוכחי: " + App.CurrentHotel.Name;
+
+                var rooms = await _api.GetRoomsByHotelIdAsync(App.CurrentHotel.Id);
+
+                if (rooms == null || rooms.Count == 0)
+                {
+                    _rooms = new ObservableCollection<Room>();
+                    RoomsGrid.ItemsSource = _rooms;
+                    MessageBox.Show("לא נמצאו חדרים במלון הזה.");
+                    return;
+                }
+
+                foreach (var room in rooms)
+                {
+                    if (room.Hotel == null)
+                    {
+                        room.Hotel = new Hotel();
+                    }
+
+                    room.Hotel.Id = App.CurrentHotel.Id;
+                    room.Hotel.Name = App.CurrentHotel.Name;
+                }
+
+                _rooms = new ObservableCollection<Room>(rooms);
+                RoomsGrid.ItemsSource = _rooms;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("שגיאה בטעינת החדרים:\n" + ex.Message);
+            }
         }
 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var room in _rooms)
+            try
             {
-                var dto = new RoomUpdateDto
+                if (App.CurrentHotel == null)
                 {
-                    Id = room.Id,
-                    RoomName = room.RoomName,
-                    AdultRate = room.AdultRate,
-                    ChildRate = room.ChildRate,
-                    HotelId = App.CurrentHotel.Id
-                };
+                    MessageBox.Show("לא נבחר מלון.");
+                    return;
+                }
 
-                await _api.UpdateRoomAsync(dto);
+                RoomsGrid.CommitEdit(DataGridEditingUnit.Cell, true);
+                RoomsGrid.CommitEdit(DataGridEditingUnit.Row, true);
+
+                foreach (var room in _rooms)
+                {
+                    if (string.IsNullOrWhiteSpace(room.RoomName))
+                    {
+                        MessageBox.Show("יש חדר בלי שם.");
+                        return;
+                    }
+
+                    RoomUpdateDto dto = new RoomUpdateDto
+                    {
+                        Id = room.Id,
+                        HotelId = App.CurrentHotel.Id,
+                        RoomName = room.RoomName,
+                        AdultRate = room.AdultRate,
+                        ChildRate = room.ChildRate,
+                        Bedrooms = room.Bedrooms,
+                        Bathrooms = room.Bathrooms,
+                        HasKitchen = room.HasKitchen,
+                        HasParking = room.HasParking,
+                        HasBalcony = room.HasBalcony,
+                        HasLivingRoom = room.HasLivingRoom,
+                        TotalUnits = room.TotalUnits
+                    };
+
+                    int result = await _api.UpdateRoomAsync(dto);
+
+                    if (result <= 0)
+                    {
+                        MessageBox.Show("השמירה נכשלה עבור חדר: " + room.RoomName);
+                        return;
+                    }
+                }
+
+                MessageBox.Show("השינויים נשמרו בהצלחה.");
+                await LoadRoomsAsync();
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("שגיאה בשמירה:\n" + ex.Message);
+            }
+        }
 
-            MessageBox.Show("נשמר בהצלחה");
+        private async void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            await LoadRoomsAsync();
         }
     }
 }

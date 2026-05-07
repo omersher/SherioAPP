@@ -22,14 +22,11 @@ namespace SherioAPP.pages
 
             LoadAvailableHotels(hotels);
         }
-
-        // חפיפה נכונה: יש חפיפה אם start < end2 && end > start2
         private static bool Overlaps(DateTime aStart, DateTime aEnd, DateTime bStart, DateTime bEnd)
             => aStart < bEnd && aEnd > bStart;
 
         private async Task<bool> IsRoomTypeAvailable(Room room, DateTime checkIn, DateTime checkOut)
         {
-            // הגנות
             if (room == null) return false;
             if (room.TotalUnits <= 0) return false;
 

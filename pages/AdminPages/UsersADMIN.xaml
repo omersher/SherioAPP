@@ -3,9 +3,10 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       FlowDirection="RightToLeft"
+      FontFamily="Segoe UI"
       Background="#F8FAFC"
       Title="UsersADMIN"
-      Height="500" 
+      Height="500"
       Width="800">
 
     <Grid Margin="20">
@@ -15,71 +16,165 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Users Management"
-                   FontSize="26"
-                   FontWeight="Bold"
-                   Margin="0,0,0,15"/>
+        <StackPanel Grid.Row="0" Margin="0,0,0,15">
+            <TextBlock Text="ניהול משתמשים"
+                       FontSize="26"
+                       FontWeight="Bold"
+                       Foreground="#0F172A"/>
+            <TextBlock Text="עריכה, הוספה, חיפוש ומחיקה של משתמשים במערכת"
+                       FontSize="14"
+                       Foreground="#64748B"
+                       Margin="0,5,0,0"/>
+        </StackPanel>
 
-        <Border Grid.Row="1"
+        <Grid Grid.Row="1" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0"
+                    Background="White"
+                    CornerRadius="10"
+                    Padding="10"
+                    Margin="0,0,10,0"
+                    BorderBrush="#E2E8F0"
+                    BorderThickness="1">
+                <DockPanel>
+                    <materialDesign:PackIcon Kind="AccountSearch"
+                                             Width="20"
+                                             Height="20"
+                                             Margin="0,0,10,0"
+                                             Foreground="#94A3B8"
+                                             VerticalAlignment="Center"/>
+                    <TextBox x:Name="SearchBox"
+                             TextChanged="SearchBox_TextChanged"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             VerticalContentAlignment="Center"
+                             FontSize="14"
+                             materialDesign:HintAssist.Hint="חפש משתמש לפי שם, אימייל או טלפון..."
+                             materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"/>
+                </DockPanel>
+            </Border>
+
+            <Button Grid.Column="1"
+                    Content="+ חדש"
+                    Width="95"
+                    Height="38"
+                    Margin="0,0,10,0"
+                    Background="#2563EB"
+                    BorderBrush="#2563EB"
+                    Foreground="White"
+                    Click="AddNewUser_Click"/>
+
+            <Button Grid.Column="2"
+                    Content="💾 שמור הכל"
+                    Width="120"
+                    Height="38"
+                    Margin="0,0,10,0"
+                    Background="#10B981"
+                    BorderBrush="#10B981"
+                    Foreground="White"
+                    Click="SaveAllUsers_Click"/>
+
+            <Button Grid.Column="3"
+                    Content="⬅ חזרה לפאנל"
+                    Width="140"
+                    Height="38"
+                    Background="#E2E8F0"
+                    BorderBrush="#E2E8F0"
+                    Foreground="#0F172A"
+                    Click="BackToAdmin_Click"/>
+        </Grid>
+
+        <Border Grid.Row="2"
                 Background="White"
-                CornerRadius="10"
-                Padding="10"
-                Margin="0,0,0,15">
-            <DockPanel>
-                <materialDesign:PackIcon Kind="AccountSearch"
-                                         Width="20"
-                                         Height="20"
-                                         Margin="0,0,10,0"/>
-                <TextBox x:Name="SearchBox"
-                         TextChanged="SearchBox_TextChanged"
-                         BorderThickness="0"
-                         Background="Transparent"
-                         VerticalContentAlignment="Center"/>
-            </DockPanel>
-        </Border>
-        <Button Content="⬅ חזרה לפאנל"
-        Width="150"
-        Height="35"
-        HorizontalAlignment="Right"
-        Margin="0,0,0,10"
-        Click="BackToAdmin_Click"/>
+                CornerRadius="12"
+                BorderBrush="#E2E8F0"
+                BorderThickness="1">
 
-        <DataGrid Grid.Row="2"
-                  x:Name="UsersGrid"
-                  AutoGenerateColumns="False"
-                  CanUserAddRows="False"
-                  IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Full Name"
-                                    Binding="{Binding FullName}"
-                                    Width="2*"/>
-                <DataGridTextColumn Header="Email"
-                                    Binding="{Binding Email}"
-                                    Width="2*"/>
-                <DataGridTextColumn Header="Phone"
-                                    Binding="{Binding Phone}"
-                                    Width="1.5*"/>
-                <DataGridCheckBoxColumn Header="Is Owner"
-                                        Binding="{Binding IsOwner}"
-                                        Width="1*"/>
-                <DataGridTemplateColumn Header="Actions" Width="3*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Content="Toggle Owner"
-                                        Style="{StaticResource MaterialDesignFlatButton}"
-                                        Click="ToggleOwner_Click"
-                                        Margin="5"/>
-                                <Button Content="Delete"
-                                        Style="{StaticResource MaterialDesignFlatButton}"
-                                        Foreground="Red"
-                                        Click="DeleteUser_Click"
-                                        Margin="5"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+            <DataGrid x:Name="UsersGrid"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      IsReadOnly="False"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="Horizontal"
+                      HorizontalGridLinesBrush="#F1F5F9"
+                      Background="White"
+                      RowHeight="45"
+                      BorderThickness="0"
+                      FontSize="14"
+                      SelectionUnit="FullRow"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      materialDesign:DataGridAssist.CellPadding="10">
+
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                        <Setter Property="Background" Value="#F8FAFC"/>
+                        <Setter Property="Padding" Value="12,14"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Foreground" Value="#475569"/>
+                    </Style>
+                </DataGrid.Resources>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID"
+                                        Binding="{Binding Id}"
+                                        IsReadOnly="True"
+                                        Width="60"/>
+
+                    <DataGridTextColumn Header="שם מלא"
+                                        Binding="{Binding FullName, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="2*"/>
+
+                    <DataGridTextColumn Header="אימייל"
+                                        Binding="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="2.2*"/>
+
+                    <DataGridTextColumn Header="טלפון"
+                                        Binding="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="1.5*"/>
+
+                    <DataGridCheckBoxColumn Header="בעלים"
+                                            Binding="{Binding IsOwner, UpdateSourceTrigger=PropertyChanged}"
+                                            Width="80"/>
+
+                    <DataGridTemplateColumn Header="פעולות" Width="115">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Click="SaveSingleUser_Click"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            Foreground="#10B981"
+                                            Width="34"
+                                            Height="34"
+                                            ToolTip="שמור משתמש">
+                                        <materialDesign:PackIcon Kind="ContentSaveOutline"
+                                                                 Width="20"
+                                                                 Height="20"/>
+                                    </Button>
+
+                                    <Button Click="DeleteUser_Click"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            Foreground="#E11D48"
+                                            Width="34"
+                                            Height="34"
+                                            Margin="6,0,0,0"
+                                            ToolTip="מחק משתמש">
+                                        <materialDesign:PackIcon Kind="DeleteOutline"
+                                                                 Width="20"
+                                                                 Height="20"/>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
     </Grid>
 </Page>

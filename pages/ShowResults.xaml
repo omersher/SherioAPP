@@ -1,6 +1,6 @@
 ﻿<Page x:Class="SherioAPP.pages.ShowResults"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"      FontFamily="Segoe UI"
       xmlns:uc="clr-namespace:SherioAPP.userControllers"
       FlowDirection="RightToLeft"
       Background="#F9FAFB"

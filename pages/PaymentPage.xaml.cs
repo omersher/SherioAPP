@@ -51,18 +51,12 @@ namespace SherioAPP.pages
 
             try
             {
-                // ==========================
-                // חישוב מחיר
-                // ==========================
                 int nights = (_checkOut - _checkIn).Days;
 
                 decimal totalPrice =
                     (nights * _room.AdultRate * _adults) +
                     (nights * _room.ChildRate * _children);
 
-                // ==========================
-                // 1️⃣ יצירת Booking
-                // ==========================
                 var booking = new Booking
                 {
                     UserID = App.CurrentUser.Id,
@@ -83,9 +77,6 @@ namespace SherioAPP.pages
                     return;
                 }
 
-                // ==========================
-                // 2️⃣ יצירת Payment
-                // ==========================
                 var payment = new Payment
                 {
                     UserID = App.CurrentUser.Id,
@@ -97,9 +88,6 @@ namespace SherioAPP.pages
 
                 await _api.InsertPaymentAsync(payment);
 
-                // ==========================
-                // 3️⃣ יצירת RoomAvailability
-                // ==========================
                 var roomAvailability = new RoomAvailability
                 {
                     RoomID = _room.Id,

@@ -53,7 +53,13 @@
                            Foreground="#111827"
                            TextWrapping="NoWrap"
                            TextTrimming="CharacterEllipsis"/>
-
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <materialDesign:PackIcon Kind="Star" 
+                             Foreground="#F59E0B" 
+                             Width="14" Height="14"/>
+                    <TextBlock Text="{Binding StarRating}" Margin="5,0,0,0"/>
+                </StackPanel>
+                
                 <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                     <materialDesign:PackIcon Kind="MapMarker" Foreground="#3B82F6" Width="14" Height="14" VerticalAlignment="Center"/>
                     <TextBlock Text="{Binding City.CityName}"

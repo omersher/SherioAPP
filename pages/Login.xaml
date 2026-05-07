@@ -71,7 +71,6 @@
                                  Padding="10"
                                  FontSize="13"/>
 
-                    <!-- ✅ השם תואם ל-C# -->
                     <TextBlock x:Name="PasswordErrorText"
                                Foreground="#DC2626"
                                FontSize="11"

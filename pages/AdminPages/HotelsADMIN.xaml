@@ -3,108 +3,181 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       FlowDirection="RightToLeft"
-      Background="#F1F5F9"
-      Height="500" Width="800">
-    <Grid Margin="24">
+      FontFamily="Segoe UI"
+      Background="#F8FAFC"
+      Height="500"
+      Width="800"
+      Title="HotelsADMIN">
+
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+        <StackPanel Grid.Row="0" Margin="0,0,0,15">
             <TextBlock Text="ניהול מלונות"
-                       FontSize="28"
+                       FontSize="26"
                        FontWeight="Bold"
                        Foreground="#0F172A"/>
-            
-            <TextBlock Text="ערוך, מחק או נהל את רשימת המלונות במערכת"
+
+            <TextBlock Text="ערוך, שמור ומחק מלונות במערכת"
                        FontSize="14"
                        Foreground="#64748B"
-                       Margin="0,4,0,0"/>
+                       Margin="0,5,0,0"/>
         </StackPanel>
-        <Button Content="⬅ חזרה לפאנל"
-        Width="150"
-        Height="35"
-        HorizontalAlignment="Right"
-        Margin="0,0,0,10"
-        Click="BackToAdmin_Click"/>
 
-        <Border Grid.Row="1" Background="White" CornerRadius="10" Padding="8,4" Margin="0,0,0,20" 
-                BorderBrush="#E2E8F0" BorderThickness="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <materialDesign:PackIcon Kind="Magnify" Width="20" Height="20" Foreground="#94A3B8" 
-                                         VerticalAlignment="Center" Margin="10,0"/>
-                <TextBox Grid.Column="1" x:Name="SearchBox" FontSize="14" BorderThickness="0"
-                         VerticalContentAlignment="Center" Background="Transparent"
-                         TextChanged="SearchBox_TextChanged" 
-                         materialDesign:HintAssist.Hint="חפש לפי שם מלון או כתובת..."
-                         materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"/>
-            </Grid>
-        </Border>
+        <Grid Grid.Row="1" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="2" Background="White" CornerRadius="12" ClipToBounds="True" BorderBrush="#E2E8F0" BorderThickness="1">
-            <DataGrid x:Name="HotelsGrid" AutoGenerateColumns="False" CanUserAddRows="False" 
-                      IsReadOnly="False" RowHeight="60" Background="White" 
-                      BorderThickness="0" HeadersVisibility="Column"
-                      GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#F1F5F9"
-                      materialDesign:DataGridAssist.CellPadding="12">
+            <Border Grid.Column="0"
+                    Background="White"
+                    CornerRadius="10"
+                    Padding="10"
+                    Margin="0,0,10,0"
+                    BorderBrush="#E2E8F0"
+                    BorderThickness="1">
+                <DockPanel>
+                    <materialDesign:PackIcon Kind="Magnify"
+                                             Width="20"
+                                             Height="20"
+                                             Margin="0,0,10,0"
+                                             Foreground="#94A3B8"
+                                             VerticalAlignment="Center"/>
+                    <TextBox x:Name="SearchBox"
+                             TextChanged="SearchBox_TextChanged"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             VerticalContentAlignment="Center"
+                             FontSize="14"
+                             materialDesign:HintAssist.Hint="חפש לפי שם מלון או עיר..."
+                             materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"/>
+                </DockPanel>
+            </Border>
+
+            <Button Grid.Column="1"
+                    Content="💾 שמור הכל"
+                    Width="120"
+                    Height="38"
+                    Margin="0,0,10,0"
+                    Background="#10B981"
+                    BorderBrush="#10B981"
+                    Foreground="White"
+                    Click="SaveAllHotels_Click"/>
+
+            <Button Grid.Column="2"
+                    Content="⬅ חזרה לפאנל"
+                    Width="140"
+                    Height="38"
+                    Background="#E2E8F0"
+                    BorderBrush="#E2E8F0"
+                    Foreground="#0F172A"
+                    Click="BackToAdmin_Click"/>
+        </Grid>
+
+        <Border Grid.Row="2"
+                Background="White"
+                CornerRadius="12"
+                BorderBrush="#E2E8F0"
+                BorderThickness="1">
+
+            <DataGrid x:Name="HotelsGrid"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      IsReadOnly="False"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="Horizontal"
+                      HorizontalGridLinesBrush="#F1F5F9"
+                      Background="White"
+                      RowHeight="45"
+                      BorderThickness="0"
+                      FontSize="14"
+                      SelectionUnit="FullRow"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      materialDesign:DataGridAssist.CellPadding="10">
 
                 <DataGrid.Resources>
                     <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
                         <Setter Property="Background" Value="#F8FAFC"/>
-                        <Setter Property="Padding" Value="12,15"/>
+                        <Setter Property="Padding" Value="12,14"/>
                         <Setter Property="FontWeight" Value="SemiBold"/>
                         <Setter Property="Foreground" Value="#475569"/>
                     </Style>
                 </DataGrid.Resources>
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="שם המלון" Binding="{Binding Name}" Width="1.5*" FontWeight="Medium"/>
-                    <DataGridTextColumn Header="עיר" Binding="{Binding City.CityName}" IsReadOnly="True" Width="*"/>
-                    <DataGridTextColumn Header="כתובת" Binding="{Binding StreetAddress}" Width="1.5*"/>
+                    <DataGridTextColumn Header="שם המלון"
+                                        Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="150"/>
 
-                    <DataGridTemplateColumn Header="כוכבים" Width="60">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding StarRating}" VerticalAlignment="Center"/>
-                                    <materialDesign:PackIcon Kind="Star" Foreground="#F59E0B" Width="12" Margin="2,0,0,0"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="עיר"
+                                        Binding="{Binding City.CityName}"
+                                        IsReadOnly="True"
+                                        Width="100"/>
 
-                    <DataGridTemplateColumn Header="שירותים" Width="110">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <!--<materialDesign:PackIcon Kind="Pool" Opacity="{Binding HasPool, Converter={StaticResource BooleanToOpacityConverter}}" Margin="2,0" Foreground="#2563EB" ToolTip="בריכה"/>-->
-                                    <materialDesign:PackIcon Kind="WeightLifter" Opacity="{Binding HasGym, Converter={StaticResource BooleanToOpacityConverter}}" Margin="2,0" Foreground="#2563EB" ToolTip="חדר כושר"/>
-                                    <materialDesign:PackIcon Kind="SilverwareForkKnife" Opacity="{Binding HasRestaurant, Converter={StaticResource BooleanToOpacityConverter}}" Margin="2,0" Foreground="#2563EB" ToolTip="מסעדה"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="כתובת"
+                                        Binding="{Binding StreetAddress, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="170"/>
+
+                    <DataGridTextColumn Header="טלפון"
+                                        Binding="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="110"/>
+
+                    <DataGridTextColumn Header="אימייל"
+                                        Binding="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="150"/>
+
+                    <DataGridTextColumn Header="אתר"
+                                        Binding="{Binding WebSite, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="130"/>
+
+                    <DataGridTextColumn Header="כוכבים"
+                                        Binding="{Binding StarRating, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="65"/>
+
+                    <DataGridCheckBoxColumn Header="בריכה"
+                                            Binding="{Binding HasPool, UpdateSourceTrigger=PropertyChanged}"
+                                            Width="60"/>
+
+                    <DataGridCheckBoxColumn Header="חדר כושר"
+                                            Binding="{Binding HasGym, UpdateSourceTrigger=PropertyChanged}"
+                                            Width="80"/>
+
+                    <DataGridCheckBoxColumn Header="מסעדה"
+                                            Binding="{Binding HasRestaurant, UpdateSourceTrigger=PropertyChanged}"
+                                            Width="70"/>
 
                     <DataGridTemplateColumn Header="פעולות" Width="120">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <Button Style="{StaticResource MaterialDesignIconButton}"
-                                            Click="SaveSingleHotel_Click" Width="35" Height="35"
-                                            ToolTip="שמור שינויים" Foreground="#10B981">
-                                        <materialDesign:PackIcon Kind="ContentSaveOutline" Width="20" Height="20"/>
+                                            Click="SaveSingleHotel_Click"
+                                            Width="34"
+                                            Height="34"
+                                            ToolTip="שמור"
+                                            Foreground="#10B981">
+                                        <materialDesign:PackIcon Kind="ContentSaveOutline"
+                                                                 Width="20"
+                                                                 Height="20"/>
                                     </Button>
 
                                     <Button Style="{StaticResource MaterialDesignIconButton}"
-                                            Click="DeleteHotel_Click" Width="35" Height="35"
-                                            ToolTip="מחק מלון" Foreground="#EF4444" Margin="5,0,0,0">
-                                        <materialDesign:PackIcon Kind="DeleteOutline" Width="20" Height="20"/>
+                                            Click="DeleteHotel_Click"
+                                            Width="34"
+                                            Height="34"
+                                            Margin="6,0,0,0"
+                                            ToolTip="מחק"
+                                            Foreground="#E11D48">
+                                        <materialDesign:PackIcon Kind="DeleteOutline"
+                                                                 Width="20"
+                                                                 Height="20"/>
                                     </Button>
                                 </StackPanel>
                             </DataTemplate>

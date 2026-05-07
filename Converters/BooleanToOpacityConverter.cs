@@ -8,15 +8,18 @@ namespace SherioAPP.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool b && b)
-                return 1.0;
+            if (value is bool boolValue)
+                return boolValue ? 1.0 : 0.25;
 
-            return 0.3;
+            return 0.25;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return Binding.DoNothing;
+            if (value is double opacity)
+                return opacity >= 1.0;
+
+            return false;
         }
     }
 }

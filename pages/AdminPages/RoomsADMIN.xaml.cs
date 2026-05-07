@@ -41,6 +41,11 @@ namespace SherioAPP.pages.AdminPages
 
                 if (roomsList != null)
                 {
+                    foreach (var room in roomsList)
+                    {
+                        room.Hotel ??= new Hotel();
+                    }
+
                     _rooms = new ObservableCollection<Room>(roomsList);
                     RoomsGrid.ItemsSource = _rooms;
                 }
@@ -49,6 +54,29 @@ namespace SherioAPP.pages.AdminPages
             {
                 MessageBox.Show("שגיאה בטעינת החדרים:\n" + ex.Message);
             }
+        }
+
+        private void AddNewRoom_Click(object sender, RoutedEventArgs e)
+        {
+            var newRoom = new Room
+            {
+                Hotel = new Hotel(),
+                RoomName = "",
+                AdultRate = 0,
+                ChildRate = 0,
+                Bedrooms = 1,
+                Bathrooms = 1,
+                TotalUnits = 1,
+                HasKitchen = false,
+                HasParking = false,
+                HasBalcony = false,
+                HasLivingRoom = false
+            };
+
+            _rooms.Insert(0, newRoom);
+            RoomsGrid.ItemsSource = _rooms;
+            RoomsGrid.SelectedItem = newRoom;
+            RoomsGrid.ScrollIntoView(newRoom);
         }
 
         private async void SaveChanges_Click(object sender, RoutedEventArgs e)
@@ -66,38 +94,76 @@ namespace SherioAPP.pages.AdminPages
                     return;
                 }
 
-                if (selectedRoom.Hotel == null)
+                if (selectedRoom.Hotel == null || selectedRoom.Hotel.Id <= 0)
                 {
-                    MessageBox.Show("לחדר שנבחר אין מלון משויך.");
+                    MessageBox.Show("יש להזין מזהה מלון חוקי.");
                     return;
                 }
 
-                var dto = new RoomUpdateDto
+                if (string.IsNullOrWhiteSpace(selectedRoom.RoomName))
                 {
-                    Id = selectedRoom.Id,
-                    HotelId = selectedRoom.Hotel.Id,
-                    RoomName = selectedRoom.RoomName,
-                    AdultRate = selectedRoom.AdultRate,
-                    ChildRate = selectedRoom.ChildRate,
-                    Bedrooms = selectedRoom.Bedrooms,
-                    Bathrooms = selectedRoom.Bathrooms,
-                    HasKitchen = selectedRoom.HasKitchen,
-                    HasParking = selectedRoom.HasParking,
-                    HasBalcony = selectedRoom.HasBalcony,
-                    HasLivingRoom = selectedRoom.HasLivingRoom,
-                    TotalUnits = selectedRoom.TotalUnits,
-                };
+                    MessageBox.Show("יש להזין שם חדר.");
+                    return;
+                }
 
-                var result = await _api.UpdateRoomAsync(dto);
-
-                if (result > 0)
+                if (selectedRoom.Id == 0)
                 {
-                    MessageBox.Show("השינוי נשמר בהצלחה!");
-                    await LoadRoomsAsync();
+                    var newRoom = new Room
+                    {
+                        Hotel = new Hotel { Id = selectedRoom.Hotel.Id },
+                        RoomName = selectedRoom.RoomName,
+                        AdultRate = selectedRoom.AdultRate,
+                        ChildRate = selectedRoom.ChildRate,
+                        Bedrooms = selectedRoom.Bedrooms,
+                        Bathrooms = selectedRoom.Bathrooms,
+                        HasKitchen = selectedRoom.HasKitchen,
+                        HasParking = selectedRoom.HasParking,
+                        HasBalcony = selectedRoom.HasBalcony,
+                        HasLivingRoom = selectedRoom.HasLivingRoom,
+                        TotalUnits = selectedRoom.TotalUnits
+                    };
+
+                    var insertResult = await _api.InsertRoomAsync(newRoom);
+
+                    if (insertResult > 0)
+                    {
+                        MessageBox.Show("החדר נוסף בהצלחה!");
+                        await LoadRoomsAsync();
+                    }
+                    else
+                    {
+                        MessageBox.Show("הוספת החדר נכשלה.");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("לא נשמרו שינויים.");
+                    var dto = new RoomUpdateDto
+                    {
+                        Id = selectedRoom.Id,
+                        HotelId = selectedRoom.Hotel.Id,
+                        RoomName = selectedRoom.RoomName,
+                        AdultRate = selectedRoom.AdultRate,
+                        ChildRate = selectedRoom.ChildRate,
+                        Bedrooms = selectedRoom.Bedrooms,
+                        Bathrooms = selectedRoom.Bathrooms,
+                        HasKitchen = selectedRoom.HasKitchen,
+                        HasParking = selectedRoom.HasParking,
+                        HasBalcony = selectedRoom.HasBalcony,
+                        HasLivingRoom = selectedRoom.HasLivingRoom,
+                        TotalUnits = selectedRoom.TotalUnits,
+                    };
+
+                    var result = await _api.UpdateRoomAsync(dto);
+
+                    if (result > 0)
+                    {
+                        MessageBox.Show("השינוי נשמר בהצלחה!");
+                        await LoadRoomsAsync();
+                    }
+                    else
+                    {
+                        MessageBox.Show("לא נשמרו שינויים.");
+                    }
                 }
             }
             catch (Exception ex)
