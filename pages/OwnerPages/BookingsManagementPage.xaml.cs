@@ -1,84 +1,84 @@
-﻿using ApiInterface;
-using Model;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
+﻿    using ApiInterface;
+    using Model;
+    using System;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Windows;
+    using System.Windows.Controls;
 
-namespace SherioAPP.pages.OwnerPages
-{
-    public partial class BookingsManagementPage : Page
+    namespace SherioAPP.pages.OwnerPages
     {
-        private readonly ApiService _api = new ApiService();
-        private ObservableCollection<Booking> _bookings = new();
-
-        public BookingsManagementPage()
+        public partial class BookingsManagementPage : Page
         {
-            InitializeComponent();
-            Loaded += BookingsManagementPage_Loaded;
-        }
+            private readonly ApiService _api = new ApiService();
+            private ObservableCollection<Booking> _bookings = new();
 
-        private async void BookingsManagementPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (App.CurrentHotel == null)
+            public BookingsManagementPage()
             {
-                MessageBox.Show("לא נבחר מלון");
-                return;
+                InitializeComponent();
+                Loaded += BookingsManagementPage_Loaded;
             }
 
-            try
+            private async void BookingsManagementPage_Loaded(object sender, RoutedEventArgs e)
             {
-                var bookingsFromDb =
-                    await _api.GetBookingsByHotelAsync(App.CurrentHotel.Id);
-
-                _bookings = new ObservableCollection<Booking>(bookingsFromDb);
-                BookingsGrid.ItemsSource = _bookings;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("שגיאה בטעינת הזמנות:\n" + ex.Message);
-            }
-        }
-
-        private async void SaveChanges_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                BookingsGrid.CommitEdit(DataGridEditingUnit.Row, true);
-                BookingsGrid.CommitEdit();
-
-                foreach (var booking in _bookings)
+                if (App.CurrentHotel == null)
                 {
-                    if (booking.AdultCount < 1)
-                    {
-                        MessageBox.Show($"הזמנה {booking.Id}: חייב להיות לפחות מבוגר אחד.");
-                        return;
-                    }
-
-                    if (booking.ChildCount < 0)
-                    {
-                        MessageBox.Show($"הזמנה {booking.Id}: מספר ילדים לא תקין.");
-                        return;
-                    }
-
-                    var dto = new BookingUpdateDto
-                    {
-                        Id = booking.Id,
-                        AdultCount = booking.AdultCount,
-                        ChildCount = booking.ChildCount,
-                        Status = booking.Status
-                    };
-
-                    await _api.UpdateBookingAsync(dto);
+                    MessageBox.Show("לא נבחר מלון");
+                    return;
                 }
 
-                MessageBox.Show("כל ההזמנות עודכנו בהצלחה!");
+                try
+                {
+                    var bookingsFromDb =
+                        await _api.GetBookingsByHotelAsync(App.CurrentHotel.Id);
+
+                    _bookings = new ObservableCollection<Booking>(bookingsFromDb);
+                    BookingsGrid.ItemsSource = _bookings;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("שגיאה בטעינת הזמנות:\n" + ex.Message);
+                }
             }
-            catch (Exception ex)
+
+            private async void SaveChanges_Click(object sender, RoutedEventArgs e)
             {
-                MessageBox.Show("שגיאה בשמירה:\n" + ex.Message);
+                try
+                {
+                    BookingsGrid.CommitEdit(DataGridEditingUnit.Row, true);
+                    BookingsGrid.CommitEdit();
+
+                    foreach (var booking in _bookings)
+                    {
+                        if (booking.AdultCount < 1)
+                        {
+                            MessageBox.Show($"הזמנה {booking.Id}: חייב להיות לפחות מבוגר אחד.");
+                            return;
+                        }
+
+                        if (booking.ChildCount < 0)
+                        {
+                            MessageBox.Show($"הזמנה {booking.Id}: מספר ילדים לא תקין.");
+                            return;
+                        }
+
+                        var dto = new BookingUpdateDto
+                        {
+                            Id = booking.Id,
+                            AdultCount = booking.AdultCount,
+                            ChildCount = booking.ChildCount,
+                            Status = booking.Status
+                        };
+
+                        await _api.UpdateBookingAsync(dto);
+                    }
+
+                    MessageBox.Show("כל ההזמנות עודכנו בהצלחה!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("שגיאה בשמירה:\n" + ex.Message);
+                }
             }
         }
     }
-}
